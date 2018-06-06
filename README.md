@@ -48,73 +48,78 @@ And that should be it ! Once the compilation is done you should see the Megascan
 
 When you export an asset from the Bridge, pick up the "Custom Build" option in the "Build Version" dropdown menu, then click on export.
 
+##
+![ - ](https://i.imgur.com/IrnXhDI.png)
 
-### Extending the LiveLink with Python Scripting
+## Extending the LiveLink with Python Scripting
 
 Having the plugin work 100% with python comes with a lot of advantages if you're looking into extending it.
 First, the entire source code is completely open, and you can find all the LiveLink script files in the LiveLink folder, where they all have the .py format.
 UnrealEnginePython also has it's code open-source for you to modify as you want.
 
-In the following example you have a very basic script that imports your own custom assets :
+The LiveLink gives you access to a set of useful commands, like this one to import a mesh for instance :
 
 ```python
-    # We start off by initializing the unreal_engine module, then we execute the Megascans LiveLink's ms_main.
-    import unreal_engine as ue
-    ue.exec('ms_main.py')
-    
-    folderpath_ = "/Game/Wood_Tree"
-    
-    # QFileDialog is a PySide2.QtGui class. We use it to open a file browser for the texture maps and another one for the mesh files.
-    Textures_Path = QFileDialog.getOpenFileNames(None, str("Select your texture maps"), "", str("Image Files (*.png *.jpg)"))
-    Mesh_Path = QFileDialog.getOpenFileNames(None, str("Select your geometry files"), "", str("Image Files (*.fbx *.obj)"))
-    
-    texture_paths = Textures_Path[0]
-    meshes_ = Mesh_Path[0]
-    
-    
-    # ms_import_mesh is a ms_main function that imports a given mesh to the input path folderpath_.
-    for mesh_ in meshes_:
-        ms_import_mesh(mesh_, folderpath_)
-    
-    
-    # ms_import_texture_list imports an array of textures to the input path folderpath_.
-    ms_import_texture_list(texture_paths, folderpath_)
-    
-    # Now we create our material instance, which is based on the material Basic_Master.
-    parent_mat = ue.load_object(Material, "/Game/Basic_Master")
-    ms_create_material_instance(parent_mat, "Wood_Tree_inst", folderpath_)
-    
-    # Then we load it.
-    inst_uobj = ue.load_object(MaterialInstance, folderpath_ + "/" + "Wood_Tree_inst")
-    
-    # This will return a list of all the meshes available in the folderpath_ folder.
-    static_mesh_array = [[item, (folderpath_ + "/" + item.get_name())] for item in ue.get_assets(folderpath_) if item.is_a(StaticMesh)]
-    
-    # Assigning a material instance to our geometry is done by calling ms_main's ms_inst_2_mesh function.
-    if mesh_path != None:
-        ms_inst_2_mesh(inst_uobj, static_mesh_array)
-    
-    
-    # Once you have our material instance applied to the geometry, we can start applying the textures from texture_paths to the material instance.
-    for texture in [item for item in ue.get_assets(folderpath_) if item.is_a(Texture2D)]:
-        try:
-            text_input = ms_get_map(texture.get_name())
-            text_input = "metallic" if text_input.lower() == "metalness" else text_input
-    
-            # This ms_main function takes the material instance's UObject, the texture's name and an str of the map type (albedo, normal, etc...).
-            ms_apply_tex2d_to_inst(inst_uobj, texture.get_path_name(), text_input)
-        except:
-            pass
-    
-    # Finally we sync the content browser to the folderpath_'s content.
-    ue.sync_browser_to_assets(ue.get_assets(folderpath_))
+ms_import_mesh('C:/Meshes/MyMesh.fbx', '/Game/Mesh_Folder')
+```
+Or this one to apply a texture map to a material instance :
+
+```python
+ms_apply_tex2d_to_inst(inst_uobject, '/Game/Textures/bark_Albedo', 'Albedo')
+```
+You could push this a lot further and write a relatively small file that automatically imports and sets up your assets : 
+```python
+# We start off by initializing the unreal_engine module, then we execute the Megascans LiveLink's ms_main.
+import unreal_engine as ue
+ue.exec('ms_main.py')
+ 
+folderpath_ = "/Game/Wood_Tree"
+ 
+# QFileDialog is a PySide2.QtGui class. We use it to open a file browser for the texture maps and another one for the mesh files.
+Textures_Path = QFileDialog.getOpenFileNames(None, str("Select your texture maps"), "", str("Image Files (*.png *.jpg)"))
+Mesh_Path = QFileDialog.getOpenFileNames(None, str("Select your geometry files"), "", str("Image Files (*.fbx *.obj)"))
+
+texture_paths = Textures_Path[0]
+meshes_ = Mesh_Path[0]
+
+# ms_import_mesh is a ms_main function that imports a given mesh to the input path folderpath_.
+for mesh_ in meshes_:
+    ms_import_mesh(mesh_, folderpath_)
+
+
+# ms_import_texture_list imports an array of textures to the input path folderpath_.
+ms_import_texture_list(texture_paths, folderpath_)
+
+# Now we create our material instance, which is based on the material Basic_Master.
+parent_mat = ue.load_object(Material, "/Game/Basic_Master")
+ms_create_material_instance(parent_mat, "Wood_Tree_inst", folderpath_)
+
+# Then we load it.
+inst_uobj = ue.load_object(MaterialInstance, folderpath_ + "/" + "Wood_Tree_inst")
+
+# This will return a list of all the meshes available in the folderpath_ folder.
+static_mesh_array = [[item, (folderpath_ + "/" + item.get_name())] for item in ue.get_assets(folderpath_) if item.is_a(StaticMesh)]
+
+# Assigning a material instance to our geometry is done by calling ms_main's ms_inst_2_mesh function.
+if mesh_path != None:
+    ms_inst_2_mesh(inst_uobj, static_mesh_array)
+
+# Once you have our material instance applied to the geometry, we can start applying the textures from texture_paths to the material instance.
+for texture in [item for item in ue.get_assets(folderpath_) if item.is_a(Texture2D)]:
+    try:
+        text_input = ms_get_map(texture.get_name())
+        text_input = "metallic" if text_input.lower() == "metalness" else text_input
+        # This ms_main function takes the material instance's UObject, the texture's name and an str of the map type (albedo, normal, etc...).
+        ms_apply_tex2d_to_inst(inst_uobj, texture.get_path_name(), text_input)
+    except:
+        pass
+ 
+# Finally we sync the content browser to the folderpath_'s content.
+ue.sync_browser_to_assets(ue.get_assets(folderpath_))
+
+```
 
 
 
-### Delete a file
+That file should give you an idea on how to interact with the Megascans LiveLink and UnrealEnginePython in general. If you have any questions feel free to check the UnrealEnginePython GitHub page or send a, email to adnan at quixel.se!
 
-You can delete the current file by clicking the **Remove** button in the file explorer. The file will be moved into the **Trash** folder and automatically deleted after 7 days of inactivity.
-
-### Export a file
-
-You can export the current file by clicking **Export to disk** in the menu. You can choose to export the file as
