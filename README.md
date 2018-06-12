@@ -24,29 +24,35 @@ Now you can start UE4 and a megascans button should be on your toolbar. Simply c
 If you're looking into installing the Megascans LiveLink on a custom Unreal Engine Build, compiling the plugin should be a fairly straightforward task.
 First, you need to install **Python 3.6 - 64Bits** on your computer, you can download the latest [version right here](https://www.python.org/downloads/).
 
-Once you've installed it please make sure that the python installation path is in your environment variable paths.
+Once you've installed it please make sure that the python installation path is in your environment variable paths. This should be the case by default as soon as you've installed it, but a quick checkup won't hurt.
 Now the next step is to go to your unreal engine installation, then "**engine/plugins**" and create a folder in there called "**UnrealEnginePython**". Clone the [Github repository of the LiveLink](https://github.com/Quixel/Megascans-UE4LiveLink) and then copy the content of the folder **LiveLink** to the **UnrealEnginePython** folder you created earlier.
+This current setup might create a conflict if you're already using UnrealEnginePython from 20Tab, and it's something we intend to change in the near future.
 
 Now if you start the engine it should ask you to compile the DLLs for the plugin, which you will accept to do.
-This can take quite a lot of time depending on what else there is to compile on your engine and how fast your computer is.
+This will take some time depending on what else there is to compile on your engine and how fast your computer is.
 
 > **For OSX/Linux ONLY** : This procedure has only been tested on Windows so far. If you're looking into building the LiveLink for Linux or OSX please consider the following steps :
 >
->  - Download the latest PySide2 "wheels" for Linux, OSX or Windows **[right here](http://download.qt.io/snapshots/ci/pyside/dev/latest/pyside2/)**. Read the name of the files very carefully to make sure that you're using the correct version.
+>  - Download the latest PySide2 "wheels" for Linux, OSX or Windows **[right here](http://download.qt.io/snapshots/ci/pyside/dev/latest/pyside2/)**. Read the name of the files very carefully to make sure you're using the correct version.
 >  
 >  - Build PySide2 using the following line in your system's command line tool (*change the path and filename to your specific needs*) : 
-> ```
+> ``
 > pip install C:/My_Wheels_Path/PySide2-Super_Long_Wheel_Name.whl
-> ```
+> ``
 > - You should now have PySide2 installed in your python directory, mine is right here :
 >      **C:\Python36\Lib\site-packages\PySide2**
-> Now what you will do is delete the PySide2 folder in **UnrealEnginePython/Binaries/Win64** and put the one you just built instead.
+> Now delete the PySide2 folder in **UnrealEnginePython/Binaries/Win64** and put the one you just built instead.
 > The file is very heavy by default, just so you know. There are a lot of dependencies that you can remove to make it as lightweight as the solution we provide by default, but it's a very time-consuming task generally.
-> - That's about it ! PySide2 is the only dependency that's a bit hard to build right now unfortunately, so this step is necessary. We hope to provide pre-compiled, lightweight PySide2 plugins at some point for most OS versions out there, but that's another topic :) 
-
-And that should be it ! Once the compilation is done you should see the Megascans Logo in your toolbar. There are still a bunch of issues related to PySide2 (*UI is not visible within a C++ project on 4.17, or can be buggy on OSX*), but overall you should be up and running with this.
+> 
+> - That's about it ! PySide2 is the only dependency that's a bit hard to build right now unfortunately, so this step is necessary.
+> We hope to provide a pre-compiled version of PySide2 at some point for all systems, and even have an alternative Slate-based user interface just to remove this extra step that can pose issues in the future.
+> 
+> And that should be it ! Once the compilation is done you should see the Megascans Logo in your toolbar. There are still a bunch of issues related to PySide2 (*UI is not visible within a C++ project on 4.17, or can be buggy on OSX*), but overall you should be up and running with this.
 
 When you export an asset from the Bridge, pick up the "Custom Build" option in the "Build Version" dropdown menu, then click on export.
+
+The LiveLink currently relies on a hard-coded port to receive data from Megascans Bridge : **13428**.
+If you happen to have two versions of unreal running at the same time, a prompt window will pop-up warning you about the port not being usable since it's already controlled by another software/process.
 
 ##
 ![ - ](https://i.imgur.com/IrnXhDI.png)
