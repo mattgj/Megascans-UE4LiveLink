@@ -6,19 +6,17 @@ ue.exec("ms_Init.py")
 ue.exec("ms_main.py")
 
 
-#Function to open the user interface. This function is called by the mousePressEvent of the "Megascans" icon in the UE4 toolbar.
+# Open the user interface. This function is called by the mousePressEvent of the "Megascans" icon in the UE4 toolbar.
 def init_megascans_ui():
     ue.exec("ms_user_interface.py")
 
 
 # Initialize our asyncio task. This task will be running in the background to check for new assets to import.
-
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 ticker = ue.add_ticker(ms_ticker_loop)
 asyncio.ensure_future(ms_simple_timer(1))
 print("Megascans Integration - LiveLink Initialized...")
-#ms_bridge_listener_cancel()
 
 # The following snippet is used to create the "Megascans" icon in the UE4 toolbar.
 
@@ -29,21 +27,10 @@ brush2 = SlateBrush(ResourceName=(custom_path + '/MS_Logo.png'), ImageSize=Vecto
 style.set('ImageBrush001', brush2)
 style.register()
 
-        # this fills the toolbar
+
 def fill_toolbar(toolbar):
     icon2 = FSlateIcon('PyStyle', 'ImageBrush001')
     toolbar.add_tool_bar_button('Megascans', 'Megascans', 'Megascans LiveLink UI', icon2, lambda: init_megascans_ui())
 
+
 ue.add_tool_bar_extension('SimpleToolBarExtension', fill_toolbar)
-
-
-
-
-
-
-
-
-
-
-
-

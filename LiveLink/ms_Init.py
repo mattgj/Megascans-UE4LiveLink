@@ -1,36 +1,39 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-# ███╗   ███╗███████╗ ██████╗  █████╗ ███████╗ ██████╗ █████╗ ███╗   ██╗███████╗    ██╗███╗   ██╗████████╗███████╗ ██████╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
-# ████╗ ████║██╔════╝██╔════╝ ██╔══██╗██╔════╝██╔════╝██╔══██╗████╗  ██║██╔════╝    ██║████╗  ██║╚══██╔══╝██╔════╝██╔════╝ ██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
-# ██╔████╔██║█████╗  ██║  ███╗███████║███████╗██║     ███████║██╔██╗ ██║███████╗    ██║██╔██╗ ██║   ██║   █████╗  ██║  ███╗██████╔╝███████║   ██║   ██║██║   ██║██╔██╗ ██║
-# ██║╚██╔╝██║██╔══╝  ██║   ██║██╔══██║╚════██║██║     ██╔══██║██║╚██╗██║╚════██║    ██║██║╚██╗██║   ██║   ██╔══╝  ██║   ██║██╔══██╗██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
-# ██║ ╚═╝ ██║███████╗╚██████╔╝██║  ██║███████║╚██████╗██║  ██║██║ ╚████║███████║    ██║██║ ╚████║   ██║   ███████╗╚██████╔╝██║  ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
-# ╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝    ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+███╗   ███╗███████╗ ██████╗  █████╗ ███████╗ ██████╗ █████╗ ███╗   ██╗███████╗    ██╗███╗   ██╗████████╗███████╗ ██████╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+████╗ ████║██╔════╝██╔════╝ ██╔══██╗██╔════╝██╔════╝██╔══██╗████╗  ██║██╔════╝    ██║████╗  ██║╚══██╔══╝██╔════╝██╔════╝ ██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+██╔████╔██║█████╗  ██║  ███╗███████║███████╗██║     ███████║██╔██╗ ██║███████╗    ██║██╔██╗ ██║   ██║   █████╗  ██║  ███╗██████╔╝███████║   ██║   ██║██║   ██║██╔██╗ ██║
+██║╚██╔╝██║██╔══╝  ██║   ██║██╔══██║╚════██║██║     ██╔══██║██║╚██╗██║╚════██║    ██║██║╚██╗██║   ██║   ██╔══╝  ██║   ██║██╔══██╗██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+██║ ╚═╝ ██║███████╗╚██████╔╝██║  ██║███████║╚██████╗██║  ██║██║ ╚████║███████║    ██║██║ ╚████║   ██║   ███████╗╚██████╔╝██║  ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝    ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
 
-# Quixel AB - Megascans Project
-# The Megascans Integration for Unreal Engine 4 was written in Python, using the UnrealEnginePython plugin
-# by 20Tab : https://github.com/20tab/UnrealEnginePython
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-# Megascans : https://megascans.se
+Quixel AB - Megascans Project
+The Megascans Integration for Unreal Engine 4 was written in Python, using the UnrealEnginePython plugin
+by 20Tab : https://github.com/20tab/UnrealEnginePython
 
-# This integration gives you a LiveLink between Megascans Bridge and Unreal Engine 4. The source code is all exposed
-# and documented for you to use it as you wish (within the Megascans EULA limits, that is).
-# We provide a set of useful functions for importing data inside the engine, but you can use the default
-# functions (of UnrealEnginePython) instead of Megascans modules if you want.
+Megascans : https://megascans.se
 
-# We've tried to document the code as much as we could within a short timeframe, so if you're having any issues
-# please send me an email (adnan@quixel.se) for support.
+This integration gives you a LiveLink between Megascans Bridge and Unreal Engine 4. The source code is all exposed
+and documented for you to use it as you wish (within the Megascans EULA limits, that is).
+We provide a set of useful functions for importing data inside the engine, but you can use the default
+functions (of UnrealEnginePython) instead of Megascans modules if you want.
+
+We've tried to document the code as much as we could within a short timeframe, so if you're having any issues
+please send me an email (adnan@quixel.se) for support.
 
 
-# ms_Init is the main function used to call the modules we might be in need of during the plugin's execution.
-# This file is called on editor start and is a requirement as a first-line import command when working with the integration API.
+ms_Init is the main function used to call the modules we might be in need of during the plugin's execution.
+This file is called on editor start and is a requirement as a first-line import command when working with the integration API.
+"""
 
 
 import unreal_engine as ue
@@ -57,7 +60,7 @@ if not os.path.exists(custom_path):
 
 
 def ms_return_path():
-    return (custom_path)
+    return custom_path
 
 print(custom_path)
 

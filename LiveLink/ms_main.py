@@ -1,60 +1,64 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# ███████╗████████╗ █████╗ ███╗   ██╗██████╗  █████╗ ██████╗ ██████╗     ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
-# ██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗    ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
-# ███████╗   ██║   ███████║██╔██╗ ██║██║  ██║███████║██████╔╝██║  ██║    █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
-# ╚════██║   ██║   ██╔══██║██║╚██╗██║██║  ██║██╔══██║██╔══██╗██║  ██║    ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
-# ███████║   ██║   ██║  ██║██║ ╚████║██████╔╝██║  ██║██║  ██║██████╔╝    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
-# ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝     ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+███████╗████████╗ █████╗ ███╗   ██╗██████╗  █████╗ ██████╗ ██████╗     ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗    ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+███████╗   ██║   ███████║██╔██╗ ██║██║  ██║███████║██████╔╝██║  ██║    █████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+╚════██║   ██║   ██╔══██║██║╚██╗██║██║  ██║██╔══██║██╔══██╗██║  ██║    ██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+███████║   ██║   ██║  ██║██║ ╚████║██████╔╝██║  ██║██║  ██║██████╔╝    ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝     ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-# Quixel AB - Megascans Project
-# The Megascans Integration for Unreal Engine 4 was written in Python, using the UnrealEnginePython plugin
-# by 20Tab : https://github.com/20tab/UnrealEnginePython
+Quixel AB - Megascans Project
+The Megascans Integration for Unreal Engine 4 was written in Python, using the UnrealEnginePython plugin
+by 20Tab : https://github.com/20tab/UnrealEnginePython
 
-# This integration gives you a LiveLink between Megascans Bridge and Unreal Engine 4. The source code is all exposed
-# and documented for you to use it as you wish (within the Megascans EULA limits, that is).
-# We provide a set of useful functions for importing data inside the engine, but you can use the default
-# functions (of UnrealEnginePython) instead of Megascans modules if you want.
+This integration gives you a LiveLink between Megascans Bridge and Unreal Engine 4. The source code is all exposed
+and documented for you to use it as you wish (within the Megascans EULA limits, that is).
+We provide a set of useful functions for importing data inside the engine, but you can use the default
+functions (of UnrealEnginePython) instead of Megascans modules if you want.
 
-# We've tried to document the code as much as we could within a short timeframe, so if you're having any issues
-# please send me an email (adnan@quixel.se) for support.
+We've tried to document the code as much as we could within a short timeframe, so if you're having any issues
+please send me an email (adnan@quixel.se) for support.
 
 
-# ms_main contains all the utility functions we're using in the livelink to import data, setup materials, create foliage, instances, etc...
-# There are quite a few functions in here that aren't used anymore but can still be useful as we integrate more features into the livelink.*
-# Most functions in here come with a quick explanation, the required input(s) and an example showing how it works.
-# This will all be organized in a better way later on to allow you to browse the functions and their documentation in a more
-# visually pleasing interface.
+ms_main contains all the utility functions we're using in the livelink to import data, setup materials, create foliage, instances, etc...
+There are quite a few functions in here that aren't used anymore but can still be useful as we integrate more features into the livelink.*
+Most functions in here come with a quick explanation, the required input(s) and an example showing how it works.
+This will all be organized in a better way later on to allow you to browse the functions and their documentation in a more
+visually pleasing interface.
 
+"""
 
 megascansAsset = None
 
 # This is the list of currently supported texture maps by the Megascans Integration
 sup_maps = ['albedo', 'normal', 'displacement', 'opacity', 'translucency',
             'gloss', 'specular', 'roughness', 'metalness', 'fuzz',
-            'bump', 'cavity', 'ao', 'mask', 'brush', 'metallic', 'diffuse']
+            'bump', 'cavity', 'ao', 'mask', 'brush', 'metallic', 'diffuse', 'normalbump']
 
 
 # The following function takes a string and a material, then return the equivalent node to the input string
-def ms_find_param(Label, Material_):
-    output_ = None
-    lister_ = Material_.Expressions
+def ms_find_param(label, material_):
+
+    lister_ = material_.Expressions
     object_ = ""
     for object_ in lister_:
+
         try:
-            if object_.DESC.lower() == Label.lower():
-                output_ = object_
+            if object_.DESC.lower() == label.lower():
                 print("PARAMETER NAME  -  " + str(object_.DESC))
                 break
+
         except Exception as e:
             print('Error on line {}'.format(
                 sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
@@ -63,12 +67,12 @@ def ms_find_param(Label, Material_):
 
 
 # The following function checks if a given UObject exists
-def ms_obj_exists(UObject_Path):
+def ms_obj_exists(object_path):
 
     Value = False
     get_obj = None
     try:
-        get_obj = ue.find_object(UObject_Path)
+        get_obj = ue.find_object(object_path)
         if get_obj != None:
             Value = True
     except:
@@ -76,9 +80,8 @@ def ms_obj_exists(UObject_Path):
 
     return Value
 
+
 # The following function returns the type (albedo, normal, etc...) of a texture map from a given texture name.
-
-
 def ms_get_map(map_name):
 
     if '.' in map_name:
@@ -88,9 +91,8 @@ def ms_get_map(map_name):
 
     return [item.lower() for item in sup_maps if item.lower() in val_][0]
 
+
 # The following function checks if a given UObject exists. This function should replace ms_obj_exists.
-
-
 def ms_instance_exists(ex_path):
     inst_ = False
     try:
@@ -101,9 +103,8 @@ def ms_instance_exists(ex_path):
 
     return inst_
 
+
 # The following function takes a UObject material and a string request corresponding to a node's name, then returns it's UObject.
-
-
 def ms_find_input_node(material, request_):
     _data_ = None
     try:
@@ -116,18 +117,20 @@ def ms_find_input_node(material, request_):
     return _data_
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_get_asset_type takes the json data from the Bridge export as an input, then returns the human-readable version of it's version ('3D Asset' for example).
-# The function takes 1 arguments:
-# - A json file that corresponds to the Bridge's raw json output
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_get_asset_type takes the json data from the Bridge export as an input, then returns the human-readable version of it's version ('3D Asset' for example).
+The function takes 1 arguments:
+- A json file that corresponds to the Bridge's raw json output
 
+Usage example ():
 
-# Usage example ():
+ms_get_asset_type(json_parse)
 
-# ms_get_asset_type(json_parse)
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_get_asset_type(json_parse):
 
@@ -144,7 +147,7 @@ def ms_get_asset_type(json_parse):
 
         if len(json_check['categories']) >= 1:
 
-            if json_parse['isCustom'] == True:
+            if json_parse['isCustom']:
                 asset_index = 'Custom Surface'
 
             elif json_check['categories'][0].lower() == '3d' and 'scatter' not in json_check['tags']:
@@ -182,24 +185,23 @@ def ms_get_asset_type(json_parse):
         return end_value
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         return 'Failed'
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_get_import_data outputs a readable array structure of assets containing all the data you need to import an asset.
+The function takes 0 arguments:
+-
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_get_import_data outputs a readable array structure of assets containing all the data you need to import an asset.
-# The function takes 0 arguments:
-# -
+Usage example ():
+ms_get_import_data()
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-# Usage example ():
-# ms_get_import_data()
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_get_import_data(material_setup):
 
@@ -225,7 +227,7 @@ def ms_get_import_data(material_setup):
                     if 'path' in item:
                         geo_list.append(item['path'])
 
-                Export_ = dict({
+                export_ = dict({
                     "AssetID": js_['id'],
                     "Type": ms_get_asset_type(js_),
                     "FolderPath": js_['path'],
@@ -235,11 +237,10 @@ def ms_get_import_data(material_setup):
                     "Resolution": js_['resolution'],
                 })
 
-                export_array.append(Export_)
+                export_array.append(export_)
 
             except Exception as e:
                 print(js_)
-                exc_type, exc_value, exc_traceback = sys.exc_info()
                 print('Error Line : {}'.format(sys.exc_info()
                                                [-1].tb_lineno), type(e).__name__, e)
                 return []
@@ -248,31 +249,31 @@ def ms_get_import_data(material_setup):
         return export_array
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         return []
         pass
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_change_node_property is used to change the property of a node inside that's inside a material.
+The function takes 4 arguments:
+- The material's UObject
+- The node's description value (str)
+- The name of the property we want to change
+- The value of the property we want to change
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_change_node_property is used to change the property of a node inside that's inside a material.
-# The function takes 4 arguments:
-# - The material's UObject
-# - The node's description value (str)
-# - The name of the property we want to change
-# - The value of the property we want to change
+Usage example (here we're changing the value of a StaticSwitchParameter to True):
 
-# Usage example (here we're changing the value of a StaticSwitchParameter to True):
+ms_change_node_property(ue.load_object(Material, '/Game/MyBasicMaterial'), 'ms_BaseColor_Switch', 'DefaultValue', True)
 
-#ms_change_node_property(ue.load_object(Material, '/Game/MyBasicMaterial'), 'ms_BaseColor_Switch', 'DefaultValue', True)
+'ms_BaseColor_Switch' corresponds to the description we've put in the StaticSwitchParameter node.
+'DefaultValue' refers to the name of the StaticSwitchParameter's switch value
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-# 'ms_BaseColor_Switch' corresponds to the description we've put in the StaticSwitchParameter node.
-# 'DefaultValue' refers to the name of the StaticSwitchParameter's switch value
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_change_node_property(material, node_desc, property_, property_value):
 
@@ -283,30 +284,30 @@ def ms_change_node_property(material, node_desc, property_, property_value):
         node_desc.save_package()
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_change_material_property is used to change a material's property.
-# The function takes 3 arguments:
-# - The material's path
-# - The name of the value we want to change
-# - The new value we want to set
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_change_material_property is used to change a material's property.
+The function takes 3 arguments:
+- The material's path
+- The name of the value we want to change
+- The new value we want to set
 
-# Usage example (here we're changing the ShadingModel to Unlit):
+Usage example (here we're changing the ShadingModel to Unlit):
 
-#ms_change_material_property(ue.load_object(Material, '/Game/MyBasicMaterial'), "ShadingModel", 0)
+ms_change_material_property(ue.load_object(Material, '/Game/MyBasicMaterial'), "ShadingModel", 0)
 
-# The last argument (6) is part of the ShadingModel's options array. 0 corresponds to Unlit, and 1 which is the default
-# will set it to Default Lit.
+The last argument (6) is part of the ShadingModel's options array. 0 corresponds to Unlit, and 1 which is the default
+will set it to Default Lit.
 
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_change_material_property(material, property_desc, property_value):
 
@@ -318,28 +319,27 @@ def ms_change_material_property(material, property_desc, property_value):
               str(property_desc) + "to" + str(property_value))
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_import_mesh is used to import an FBX or OBJ mesh.
+The function takes 2 arguments:
+- The mesh's directory path
+- The mesh's import path (basically where you want to place in your UE4 project)
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_import_mesh is used to import an FBX or OBJ mesh.
-# The function takes 2 arguments:
-# - The mesh's directory path
-# - The mesh's import path (basically where you want to place in your UE4 project)
+Usage example ():
 
-# Usage example ():
+ms_import_mesh('C:/Users/Username/Desktop/MyMesh.obj', '/Game/Mesh_Folder')
 
-#ms_import_mesh('C:/Users/Username/Desktop/MyMesh.obj', '/Game/Mesh_Folder')
+'/Game/Mesh_Folder' means that we're saving our mesh to the "Mesh_Folder" folder inside "Content" which corresponds to "Game".
 
-# '/Game/Mesh_Folder' means that we're saving our mesh to the "Mesh_Folder" folder inside "Content" which corresponds to "Game".
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_import_mesh(MeshPath, AssetPath):
 
@@ -355,35 +355,34 @@ def ms_import_mesh(MeshPath, AssetPath):
         fbx_factory.ImportUI.StaticMeshImportData.ImportUniformScale = 5.0
 
         if MeshPath.lower().endswith("obj"):
-            #importme_ = ue.import_asset(MeshPath, AssetPath)
             fbx_factory.ImportUI.bIsObjImport = True
-            mesh_ = fbx_factory.factory_import_object(MeshPath, AssetPath)
+            fbx_factory.factory_import_object(MeshPath, AssetPath)
         else:
-            mesh_ = fbx_factory.factory_import_object(MeshPath, AssetPath)
+            fbx_factory.factory_import_object(MeshPath, AssetPath)
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_create_material_instance creates a material instance.
-# The function takes 3 arguments:
-# - The parent material's UObject
-# - The new material instance's name
-# - The material instance's path
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_create_material_instance creates a material instance.
+The function takes 3 arguments:
+- The parent material's UObject
+- The new material instance's name
+- The material instance's path
 
-# Usage example ():
+Usage example ():
 
-#name_ = "base_material"
-#ms_create_material_instance(ue.load_object(Material, '/Game/MyBasicMaterial'), name_, "/Game/Materials_Folder/" + name_)
+name_ = "base_material"
+ms_create_material_instance(ue.load_object(Material, '/Game/MyBasicMaterial'), name_, "/Game/Materials_Folder/" + name_)
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_create_material_instance(M_Parent, Inst_Name, InstancePath):
 
@@ -396,27 +395,27 @@ def ms_create_material_instance(M_Parent, Inst_Name, InstancePath):
         print("Megascans Integration - Created Material Instance " + str(Inst_Name))
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_assign_texture_to_instance creates a material instance.
-# The function takes 3 arguments:
-# - The material instance's path
-# - The texture path
-# - The property from the material instance that we want to change.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_assign_texture_to_instance creates a material instance.
+The function takes 3 arguments:
+- The material instance's path
+- The texture path
+- The property from the material instance that we want to change.
 
-# Usage example ():
+Usage example ():
 
-#ms_assign_texture_to_instance("/Game/Megascans", ("/Game/" + "Rubber_Albedo"), "Albedo")
+ms_assign_texture_to_instance("/Game/Megascans", ("/Game/" + "Rubber_Albedo"), "Albedo")
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_assign_texture_to_instance(path_, Texture, Property):
 
@@ -454,40 +453,40 @@ def ms_assign_texture_to_instance(path_, Texture, Property):
                   str(Texture) + ' to material instance ' + str(material_instance))
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_load_asset_data imports all the available meshes from the given input path, mesh and texture format.
-# The function takes 4 arguments:
-# - An str path that contains your textures and meshes to import.
-# - the mesh format, which can be "fbx", "obj" or whatever format you want that is supported by ue4.
-# - the textures format, "png", "jpg" or other.
-# - An array of strings that you want to use as a mask for your naming convention. If you set custom_maps's value to None then it'll use
-# - the default naming conventions (albedo, normal, roughness, ao, etc...).
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_load_asset_data imports all the available meshes from the given input path, mesh and texture format.
+The function takes 4 arguments:
+- An str path that contains your textures and meshes to import.
+- the mesh format, which can be "fbx", "obj" or whatever format you want that is supported by ue4.
+- the textures format, "png", "jpg" or other.
+- An array of strings that you want to use as a mask for your naming convention. If you set custom_maps's value to None then it'll use
+- the default naming conventions (albedo, normal, roughness, ao, etc...).
 
-# Usage example ():
+Usage example ():
 
-# asset_path = (r"C:\Users\Username\Desktop\Pipeline_Tutorial\Door_Project").replace("\\", "/")
-# pbr_maps = ["albedo", "normal", "roughness"]
-# geo_array, maps_array = ms_load_asset_data(asset_path, "fbx", "png", custom_maps = pbr_maps)
+asset_path = (r"C:\Desktop\Pipeline_Tutorial\Door_Project")
+pbr_maps = ["albedo", "normal", "roughness"]
+geo_array, maps_array = ms_load_asset_data(asset_path, "fbx", "png", custom_maps = pbr_maps)
 
-# The pbr_maps array is used as a mask to get only three textures : albedo, normal and roughness. You can extend
-# that list as you wish or just set custom_maps to None if your naming convention is similar to the Megascans library's.
+The pbr_maps array is used as a mask to get only three textures : albedo, normal and roughness. You can extend
+that list as you wish or just set custom_maps to None if your naming convention is similar to the Megascans library's.
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_load_asset_data(asset_path, mesh_frmt, texture_frmt, custom_maps=None):
 
     try:
         support_maps = []
-        if custom_maps == None:
+        if custom_maps is None:
             support_maps = ["albedo", "normal", "roughness", "gloss",
                             "specular", "metallic", "translucency", "opacity",
                             "mask", "displacement", "ao", "emissive"]
@@ -505,29 +504,28 @@ def ms_load_asset_data(asset_path, mesh_frmt, texture_frmt, custom_maps=None):
         return geometry_array, textures_array
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_apply_tex2d_to_inst creates a material instance.
+The function takes 3 arguments:
+- The material instance's path
+- The texture path
+- The property from the material instance that we want to change.
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_apply_tex2d_to_inst creates a material instance.
-# The function takes 3 arguments:
-# - The material instance's path
-# - The texture path
-# - The property from the material instance that we want to change.
+Usage example ():
 
-# Usage example ():
+ms_apply_tex2d_to_inst(ue.load_object(MaterialInstance, (asset_dir + "/" + instance_name)), ("/Game/" + "Rubber_Albedo"), "Albedo")
 
-#ms_apply_tex2d_to_inst(ue.load_object(MaterialInstance, (asset_dir + "/" + instance_name)), ("/Game/" + "Rubber_Albedo"), "Albedo")
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_apply_tex2d_to_inst(mat_instance, Texture, Property):
 
@@ -558,32 +556,30 @@ def ms_apply_tex2d_to_inst(mat_instance, Texture, Property):
               str(Texture) + ' to material instance ' + str(mat_instance))
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_apply_mat_2_sel applies an input material to the currently selected actors in the scene..
-# The function takes 1 arguments:
-# - The material's UObject
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_apply_mat_2_sel applies an input material to the currently selected actors in the scene..
+The function takes 1 arguments:
+- The material's UObject
 
-# Usage example ():
+Usage example ():
 
-#ms_apply_mat_2_sel(ue.load_object(Material, '/Game/MyBasicMaterial'))
+ms_apply_mat_2_sel(ue.load_object(Material, '/Game/MyBasicMaterial'))
 
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_apply_mat_2_sel(material_):
 
     try:
         get_sel = ue.editor_get_selected_actors()
-
-        mesh_actors = []
 
         for sel in get_sel:
             try:
@@ -600,31 +596,29 @@ def ms_apply_mat_2_sel(material_):
             except:
                 pass
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_form_base_structure creates/imports all the necessary files/folders for the plugin on startup.
-# The function takes 0 arguments:
-# -
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_form_base_structure creates/imports all the necessary files/folders for the plugin on startup.
+The function takes 0 arguments:
+-
 
-# Usage example ():
+Usage example ():
 
-# ms_form_base_structure()
+ms_form_base_structure()
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_form_base_structure():
 
     try:
-        megascans_fldr = os.path.join(
-            ms_return_path(), 'megascans', 'ui', 'font')
 
         content_path = ue.get_content_dir()
 
@@ -651,12 +645,12 @@ def ms_form_base_structure():
             mat_fldr) if file_.lower().endswith('.json')]
 
         for a in resources_:
-            if ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + os.path.basename(a).split('.')[0]) == False:
+            if not ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + os.path.basename(a).split('.')[0]):
                 obj_ = ue.import_asset(a, "/Game/Megascans/Master_Materials")
                 obj_.save_package()
 
         for mat_ in materials_:
-            if ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + mat_) == False:
+            if not ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + mat_):
                 ms_create_master_material(mat_)
 
             material_ = ue.load_object(
@@ -664,54 +658,55 @@ def ms_form_base_structure():
             if len(material_.Expressions) == 0:
                 ms_create_master_material(material_)
 
-    except Exception as e:
+    except:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         print(' Error Info : ' + str(exc_value))
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_import_texture_list import an array of textures.
+The function takes 2 arguments:
+- An array of paths that correspond to each texture's directory.
+- The project path in which we want to import the textures.
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_import_texture_list import an array of textures.
-# The function takes 2 arguments:
-# - An array of paths that correspond to each texture's directory.
-# - The project path in which we want to import the textures.
+Usage example ():
 
-# Usage example ():
+ms_import_texture_list(['C:/Users/Username/Desktop/Quixel_Albedo.jpg', 'C:/Users/Username/Desktop/Quixel_Normal.jpg',
+                                                'C:/Users/Username/Desktop/Quixel_Roughness.jpg'], "/Game/TexturesFolder")
 
-#ms_import_texture_list(['C:/Users/Username/Desktop/Quixel_Albedo.jpg', 'C:/Users/Username/Desktop/Quixel_Normal.jpg', 'C:/Users/Username/Desktop/Quixel_Roughness.jpg'], "/Game/TexturesFolder")
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_import_texture_list(Textures, AssetPath):
 
     try:
         for texture in Textures:
-            if ms_obj_exists(AssetPath + '/' + os.path.basename(texture).split('.')[0]) == False:
-                asset = ue.import_asset(texture, AssetPath)
+            if not ms_obj_exists(AssetPath + '/' + os.path.basename(texture).split('.')[0]):
+                ue.import_asset(texture, AssetPath)
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_create_foliage_asset creates an Unreal Foliage asset from a given listo f meshes.
+The function takes 1 arguments:
+- A string representing the path of the asset.
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_create_foliage_asset creates an Unreal Foliage asset from a given listo f meshes.
-# The function takes 1 arguments:
-# - A string representing the path of the asset.
+Usage example ():
 
-# Usage example ():
+ms_create_foliage_asset("/Game/Meshes_To_Process")
 
-# ms_create_foliage_asset("/Game/Meshes_To_Process")
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 def ms_create_foliage_asset(AssetPath):
 
@@ -734,25 +729,25 @@ def ms_create_foliage_asset(AssetPath):
                 foliage_type.save_package()
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_inst_2_mesh applies a material instance to a list of meshes.
-# The function takes 1 arguments:
-# - A path to the folder that contains our meshes and material instance. This value refers to a project path.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_inst_2_mesh applies a material instance to a list of meshes.
+The function takes 1 arguments:
+- A path to the folder that contains our meshes and material instance. This value refers to a project path.
 
-# Usage example ():
+Usage example ():
 
-#ms_inst_2_mesh(ue.load_object(MaterialInstance, ("/Game/Content/Instance01")), ["/Game/Content/Mesh01", "/Game/Content/Mesh02", "/Game/Content/Mesh03"])
+ms_inst_2_mesh(ue.load_object(MaterialInstance, ("/Game/Content/Instance01")), ["/Game/Content/Mesh01", "/Game/Content/Mesh02", "/Game/Content/Mesh03"])
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_inst_2_mesh(inst_uobj, geo_array):
 
@@ -773,14 +768,12 @@ def ms_inst_2_mesh(inst_uobj, geo_array):
             obj_[0].save_package()
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
+"""
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
 # ms_assign_instance_to_meshes applies a material instance to a list of meshes.
@@ -792,6 +785,8 @@ def ms_inst_2_mesh(inst_uobj, geo_array):
 # ms_assign_instance_to_meshes("/Game/MyAssetFolder")
 
         # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_assign_instance_to_meshes(AssetPath):
 
@@ -823,26 +818,26 @@ def ms_assign_instance_to_meshes(AssetPath):
             obj_[0].save_package()
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# connect_nodes_to_material is a !DEPRECATED FUNCTION! that connects all the nodes from our material's nodes to the main node.
-# The function takes 2 arguments:
-# A UObject of the material
-# A string representing the material type we're targeting
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+connect_nodes_to_material is a !DEPRECATED FUNCTION! that connects all the nodes from our material's nodes to the main node.
+The function takes 2 arguments:
+A UObject of the material
+A string representing the material type we're targeting
 
-# Usage example ():
+Usage example ():
 
-# connect_nodes_to_material(material, 'Standard_MasterMaterial')
+connect_nodes_to_material(material, 'Standard_MasterMaterial')
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def connect_nodes_to_material(material, material_setup):
 
@@ -912,33 +907,33 @@ def connect_nodes_to_material(material, material_setup):
                     Expression=ms_find_param(item, material))
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_materialblend_setup creates a texture-blended material instance. It relies on a set of selected assets in the content browser,
-# where it basically gets the paths of the selected assets, then searchs for all the different texture maps in each.
-# If you were to blend three megascans assets for instance, you could search for "Albedo" and select the three albeo textures that you want.
-# The tool will then automatically detect all the other textures inside the albedo's folders and set up the material instance for you.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_materialblend_setup creates a texture-blended material instance. It relies on a set of selected assets in the content browser,
+where it basically gets the paths of the selected assets, then searchs for all the different texture maps in each.
+If you were to blend three megascans assets for instance, you could search for "Albedo" and select the three albeo textures that you want.
+The tool will then automatically detect all the other textures inside the albedo's folders and set up the material instance for you.
 
-# The function takes 1 arguments:
-# - An str that is either "create" for creating a material or "update" for updating it.
+The function takes 1 arguments:
+- An str that is either "create" for creating a material or "update" for updating it.
 
-# Usage example ():
+Usage example ():
 
-# ms_materialblend_setup("create")
+ms_materialblend_setup("create")
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_materialblend_setup(input_cmd):
 
-    material_instance = None
+    material_instance, valid_name, inst_path = None, None, None
     blend_paths = []
 
     try:
@@ -1011,7 +1006,6 @@ def ms_materialblend_setup(input_cmd):
                         pass
 
                 for blend_ in blend_inputs:
-                    #print('STARTED PROCESSING................')
                     Texture2D = ue.find_class('Texture2D')
                     tex = ue.load_object(
                         Texture2D, blend_[0] + '/' + blend_[2])
@@ -1024,25 +1018,25 @@ def ms_materialblend_setup(input_cmd):
                 ue.sync_browser_to_assets([material_instance])
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_set_master_material saves a master material to the -/megascans/materials repository.
-# The function takes 0 arguments:
-# -
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_set_master_material saves a master material to the -/megascans/materials repository.
+The function takes 0 arguments:
+-
 
-# Usage example ():
+Usage example ():
 
-# ms_set_master_material()
+ms_set_master_material()
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_set_master_material():
 
@@ -1054,9 +1048,6 @@ def ms_set_master_material():
                            "SubsurfaceColor", "AmbientOcclusion", "Refraction", "PixelDepthOffset", ]
 
         mat_ = ue.get_selected_assets()
-        clip_content = app.clipboard().text()
-
-        material_ = None
 
         if len(mat_) >= 1 and mat_[0].is_a(Material):
             material_ = (mat_[0])
@@ -1089,25 +1080,25 @@ def ms_set_master_material():
             ue.log('Please make sure that : \n - You have a material selected in the content browser.\n - You have copied all the nodes in the material by selecting them all then CTRL+C.')
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_save_master_material saves a master material to the -/megascans/materials repository.
-# The function takes 0 arguments:
-# -
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_save_master_material saves a master material to the -/megascans/materials repository.
+The function takes 0 arguments:
+-
 
-# Usage example ():
+Usage example ():
 
-# ms_save_master_material()
+ms_save_master_material()
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_save_master_material():
 
@@ -1171,25 +1162,25 @@ def ms_save_master_material():
             ue.log('Please make sure that : \n - You have a material selected in the content browser.\n - You have copied all the nodes in the material by selecting them all then CTRL+C.')
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_get_all_material_properties returns all the properties it can of the input material.
-# The function takes 1 arguments:
-# a UObject of the material
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_get_all_material_properties returns all the properties it can of the input material.
+The function takes 1 arguments:
+a UObject of the material
 
-# Usage example ():
+Usage example ():
 
-# ms_get_all_material_properties(material)
+ms_get_all_material_properties(material)
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_get_all_material_properties(material):
 
@@ -1209,20 +1200,22 @@ def ms_get_all_material_properties(material):
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_auto_populate_foliage takes gets all Foliage assets from a given path to add them inside the current foliage editor.
-# The function takes 1 arguments:
-# a str corresponding to the current path where you have Foliage assets.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_auto_populate_foliage takes gets all Foliage assets from a given path to add them inside the current foliage editor.
+The function takes 1 arguments:
+a str corresponding to the current path where you have Foliage assets.
 
-# Usage example ():
+Usage example ():
 
-# ms_auto_populate_foliage('/Game/Megascans/3D_Plants/02_semkO/Foliage')
+ms_auto_populate_foliage('/Game/Megascans/3D_Plants/02_semkO/Foliage')
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_auto_populate_foliage(foliage_dir):
 
@@ -1253,23 +1246,25 @@ def ms_auto_populate_foliage(foliage_dir):
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_create_master_material creates a master material from the given material type.
-# A material type is a material that runs on a specific set of megascans objects.
-# For instance, the Foliage_MasterMaterial has an array of ['3dplant', 'atlas'] which makes it only appliable on those two.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_create_master_material creates a master material from the given material type.
+A material type is a material that runs on a specific set of megascans objects.
+For instance, the Foliage_MasterMaterial has an array of ['3dplant', 'atlas'] which makes it only appliable on those two.
 
-# The function takes 1 arguments:
-# a string of the material type. The material types are written by the IntegrationToBridge_Format function.
+The function takes 1 arguments:
+a string of the material type. The material types are written by the IntegrationToBridge_Format function.
 
-# Usage example ():
+Usage example ():
 
-# ms_create_master_material('Standard_MasterMaterial')
+ms_create_master_material('Standard_MasterMaterial')
 
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_create_master_material(MaterialType):
 
@@ -1340,29 +1335,29 @@ def ms_create_master_material(MaterialType):
         return material
 
     except Exception as e:
-        return None
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
+        return None
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
-# ms_base_importer provides a basic importer that relies on the Bridge's livelink.
-# Whenever a new asset is sent from the Bridge this is the function that gets called to deal with it, from setting
-# up the import data to having everything right inside the engine.
+"""
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+ms_base_importer provides a basic importer that relies on the Bridge's livelink.
+Whenever a new asset is sent from the Bridge this is the function that gets called to deal with it, from setting
+up the import data to having everything right inside the engine.
 
-# The function takes 1 arguments:
-# -
+The function takes 1 arguments:
+-
 
-# Usage example ():
+Usage example ():
 
-# ms_base_importer(ue.load_object()
+ms_base_importer(ue.load_object()
 
-    # +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++#
+"""
+
 
 def ms_base_importer(material_setup):
 
@@ -1370,7 +1365,7 @@ def ms_base_importer(material_setup):
         ms_form_base_structure()
 
         base_maps = ['albedo', 'normal',
-                     'displacement', 'opacity', 'translucency']
+                     'displacement', 'opacity', 'translucency', 'normalBump']
 
         pbr_specular = base_maps + ['specular', 'gloss', 'brush', 'mask']
         pbr_metallic = base_maps + ['roughness', 'metalness', 'brush', 'mask']
@@ -1408,6 +1403,7 @@ def ms_base_importer(material_setup):
 
             geo_array, maps_array = obj_['MeshList'], obj_['TextureList']
 
+            # print(maps_array)
             maps_array = [item[0] for item in maps_array if ms_get_map(
                 os.path.basename(item[0])).lower() in pbr_workflow]
 
@@ -1423,7 +1419,7 @@ def ms_base_importer(material_setup):
                     print('Foliage asset detected, creating foliage...')
                     ms_create_foliage_asset(content_dir)
 
-                if ms_instance_exists(content_dir + "/" + instance_name) == False:
+                if not ms_instance_exists(content_dir + "/" + instance_name) :
                     parent_path = '/Game/Megascans/Master_Materials/' if len(
                         obj_mat) <= 2 else obj_mat[2]
                     parent_mat = ue.load_object(
@@ -1465,12 +1461,9 @@ def ms_base_importer(material_setup):
                     0, 'No textures maps were found for import, operation cancelled.')
 
     except Exception as e:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print(' Error Info : ' + str(exc_value))
         print('Error Line : {}'.format(sys.exc_info()
                                        [-1].tb_lineno), type(e).__name__, e)
         pass
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 def ms_ticker_loop(delta_time):
@@ -1490,13 +1483,11 @@ def ms_bridge_listener_cancel():
         pass
 
 
-# host, port = 'localhost', 13428
-
-
 async def ms_simple_timer(frequency):
 
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     socket_.bind(('localhost', 13428))
+    print("Intialized Timer")
 
     while True:
         try:
@@ -1507,14 +1498,15 @@ async def ms_simple_timer(frequency):
 
             client, address = socket_.accept()
 
-            material_setup = client.recv(4096*32)
-            if material_setup != None:
+            material_setup = client.recv(4096*4096)
+
+            if material_setup is not None:
                 ue.log("Imported " + str(len(material_setup)) +
                        " assets from Megascans Bridge")
                 ms_base_importer(material_setup)
                 material_setup = []
 
         except Exception as e:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            #print(' Error Info : ' + str(exc_value))
+            # print('Error Line : {}'.format(sys.exc_info()
+                                           # [-1].tb_lineno), type(e).__name__, e)
             pass
