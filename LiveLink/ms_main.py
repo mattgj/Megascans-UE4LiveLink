@@ -1510,3 +1510,88 @@ async def ms_simple_timer(frequency):
             # print('Error Line : {}'.format(sys.exc_info()
                                            # [-1].tb_lineno), type(e).__name__, e)
             pass
+
+
+
+
+
+
+# QtSignal_Handler is a PySide2 QObject used to emit signals between the BridgeConnector thread and
+# the main thread.
+
+class QtSignal_Handler(QObject):
+    Bridge_Call = Signal()
+    def __init__(self, parent = None):
+        super(QtSignal_Handler, self).__init__(parent)
+
+
+# BridgeConnector is the thread we're using to monitor the given port and signal the QtSignal_Handler
+# class for any new import data.
+
+class BridgeConnector(threading.Thread):
+
+    def __init__(self, eventHandle, port):
+         super(BridgeConnector, self).__init__()
+         self.port = port
+         self.Signal = eventHandle
+         self.TotalData = []
+
+    def run(self):
+        try:
+            host, port = 'localhost', self.port
+            socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket_.bind((host, port))
+            print("BridgeConnector Initialized...")
+
+            while True:
+                socket_.listen(5)
+                client, address = socket_.accept()
+                data = ""
+                data = client.recv(4096)
+
+                if data != "":
+                    self.TotalData = []; self.TotalData.append(data)
+                    while True:
+                        data = client.recv(4096)
+                        if data : self.TotalData.append(data)
+                        else : break
+                    self.Signal.Bridge_Call.emit()
+                    time.sleep(1)
+                    # break
+        except:
+            #TODO - Include pop-up message when the port is already in use by another software/process.
+            pass
+# end of thread
+
+
+def StartImportFunction(self):
+    # print(self.TotalData)
+    print("importing...")
+    ms_base_importer(self.TotalData)
+    print("imported...")
+
+
+
+
+# asset_loader = QuixelMegascansLoader()
+
+# user_interface = QuixelMegascansLoaderUI(hou.ui.mainQtWindow(), asset_loader)
+# user_interface.show()
+
+# Start the Bridge monitoring thread and the signal monitor class
+event_handler = QtSignal_Handler()
+thread_ = BridgeConnector(22950)
+event_handler.Bridge_Call.connect(lambda : StartImportFunction(thread_))
+thread_.start()
+
+
+
+
+
+
+
+
+
+
+
+
