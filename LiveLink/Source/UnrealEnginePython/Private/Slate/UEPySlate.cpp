@@ -108,6 +108,7 @@
 
 #include "Runtime/Core/Public/Misc/Attribute.h"
 #include "Runtime/Slate/Public/Framework/Application/SlateApplication.h"
+#include "Runtime/SlateCore/Public/Styling/SlateStyleRegistry.h"
 
 FReply FPythonSlateDelegate::OnMouseEvent(const FGeometry &geometry, const FPointerEvent &pointer_event)
 {
@@ -557,7 +558,7 @@ FText FPythonSlateDelegate::GetterFText() const
 		return FText();
 	}
 
-	FText text = FText::FromString(PyUnicode_AsUTF8(str));
+	FText text = FText::FromString(UEPyUnicode_AsUTF8(str));
 	Py_DECREF(str);
 	Py_DECREF(ret);
 	return text;
@@ -581,7 +582,7 @@ FString FPythonSlateDelegate::GetterFString() const
 		return FString();
 	}
 
-	FString fstr = UTF8_TO_TCHAR(PyUnicode_AsUTF8(str));
+	FString fstr = UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(str));
 	Py_DECREF(str);
 	Py_DECREF(ret);
 	return fstr;
@@ -1189,7 +1190,7 @@ PyObject *py_unreal_engine_create_structure_detail_view(PyObject *self, PyObject
 	{
 		Py_INCREF(ue_py_struct);
 		ret->ue_py_struct = ue_py_struct;
-		struct_scope = MakeShared<FStructOnScope>(ue_py_struct->u_struct, ue_py_struct->data);
+		struct_scope = MakeShared<FStructOnScope>(ue_py_struct->u_struct, ue_py_struct->u_struct_ptr);
 	}
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
@@ -1283,7 +1284,7 @@ PyObject *py_unreal_engine_add_menu_extension(PyObject * self, PyObject * args)
 	if (!menu_extension_interface)
 		return PyErr_Format(PyExc_Exception, "module %s is not supported", module);
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
@@ -1316,7 +1317,7 @@ PyObject *py_unreal_engine_add_menu_bar_extension(PyObject * self, PyObject * ar
 
 	FLevelEditorModule &ExtensibleModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
@@ -1349,7 +1350,7 @@ PyObject *py_unreal_engine_add_tool_bar_extension(PyObject * self, PyObject * ar
 
 	FLevelEditorModule &ExtensibleModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	TSharedRef<FPythonSlateCommands> *commands = new TSharedRef<FPythonSlateCommands>(new FPythonSlateCommands());
@@ -1377,7 +1378,7 @@ PyObject *py_unreal_engine_add_asset_view_context_menu_extension(PyObject * self
 		return NULL;
 	}
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	FContentBrowserModule &ContentBrowser = FModuleManager::LoadModuleChecked<FContentBrowserModule>("ContentBrowser");
@@ -1403,7 +1404,7 @@ PyObject *py_unreal_engine_register_nomad_tab_spawner(PyObject * self, PyObject 
 		return NULL;
 	}
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 		return PyErr_Format(PyExc_Exception, "argument is not callable");
 
 	FOnSpawnTab spawn_tab;
@@ -1489,7 +1490,7 @@ PyObject * py_unreal_engine_create_wrapper_from_pyswidget(PyObject *self, PyObje
 
 	FPythonSWidgetWrapper py_swidget_wrapper;
 	py_swidget_wrapper.Widget = Widget;
-	return py_ue_new_uscriptstruct(FPythonSWidgetWrapper::StaticStruct(), (uint8 *)&py_swidget_wrapper);
+	return py_ue_new_owned_uscriptstruct(FPythonSWidgetWrapper::StaticStruct(), (uint8 *)&py_swidget_wrapper);
 }
 
 PyObject *py_unreal_engine_open_color_picker(PyObject *self, PyObject *args, PyObject *kwargs)
@@ -1506,7 +1507,7 @@ PyObject *py_unreal_engine_open_color_picker(PyObject *self, PyObject *args, PyO
 		return nullptr;
 	}
 
-	if (!PyCalllable_Check_Extended(py_callable))
+	if (!PyCallable_Check(py_callable))
 	{
 		return PyErr_Format(PyExc_Exception, "on_color_committed must be a callable");
 	}

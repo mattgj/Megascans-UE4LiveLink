@@ -19,6 +19,14 @@
 #include "HAL/PlatformApplicationMisc.h"
 #endif
 
+#include "Runtime/Launch/Public/LaunchEngineLoop.h"
+
+#if PLATFORM_MAC
+#include "Runtime/Core/Public/Mac/CocoaThread.h"
+#endif
+
+#include "Runtime/Slate/Public/Framework/Application/SlateApplication.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectIterator.h"
 
 PyObject *py_unreal_engine_log(PyObject * self, PyObject * args)
 {
@@ -31,12 +39,11 @@ PyObject *py_unreal_engine_log(PyObject * self, PyObject * args)
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
 		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
-	char *message = PyUnicode_AsUTF8(stringified);
+	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Log, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_log_warning(PyObject * self, PyObject * args)
@@ -50,12 +57,11 @@ PyObject *py_unreal_engine_log_warning(PyObject * self, PyObject * args)
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
 		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
-	char *message = PyUnicode_AsUTF8(stringified);
+	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Warning, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_log_error(PyObject * self, PyObject * args)
@@ -69,12 +75,11 @@ PyObject *py_unreal_engine_log_error(PyObject * self, PyObject * args)
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
 		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
-	char *message = PyUnicode_AsUTF8(stringified);
+	const char *message = UEPyUnicode_AsUTF8(stringified);
 	UE_LOG(LogPython, Error, TEXT("%s"), UTF8_TO_TCHAR(message));
 	Py_DECREF(stringified);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_add_on_screen_debug_message(PyObject * self, PyObject * args)
@@ -96,14 +101,13 @@ PyObject *py_unreal_engine_add_on_screen_debug_message(PyObject * self, PyObject
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
 		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
-	char *message = PyUnicode_AsUTF8(stringified);
+	const char *message = UEPyUnicode_AsUTF8(stringified);
 
 	GEngine->AddOnScreenDebugMessage(key, time_to_display, FColor::Green, FString::Printf(TEXT("%s"), UTF8_TO_TCHAR(message)));
 
 	Py_DECREF(stringified);
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_print_string(PyObject * self, PyObject * args)
@@ -135,7 +139,7 @@ PyObject *py_unreal_engine_print_string(PyObject * self, PyObject * args)
 	PyObject *stringified = PyObject_Str(py_message);
 	if (!stringified)
 		return PyErr_Format(PyExc_Exception, "argument cannot be casted to string");
-	char *message = PyUnicode_AsUTF8(stringified);
+	const char *message = UEPyUnicode_AsUTF8(stringified);
 
 	GEngine->AddOnScreenDebugMessage(-1, timeout, color, FString(UTF8_TO_TCHAR(message)));
 
@@ -318,6 +322,21 @@ PyObject *py_unreal_engine_unload_package(PyObject * self, PyObject * args)
 
 	Py_RETURN_NONE;
 }
+
+PyObject *py_unreal_engine_get_package_filename(PyObject * self, PyObject * args)
+{
+	char *name;
+	if (!PyArg_ParseTuple(args, "s:get_package_filename", &name))
+	{
+		return NULL;
+	}
+
+	FString Filename;
+	if (!FPackageName::DoesPackageExist(FString(UTF8_TO_TCHAR(name)), nullptr, &Filename))
+		return PyErr_Format(PyExc_Exception, "package does not exist");
+
+	return PyUnicode_FromString(TCHAR_TO_UTF8(*Filename));
+}
 #endif
 
 PyObject *py_unreal_engine_load_class(PyObject * self, PyObject * args)
@@ -448,7 +467,7 @@ PyObject *py_unreal_engine_string_to_guid(PyObject * self, PyObject * args)
 
 	if (FGuid::Parse(FString(str), guid))
 	{
-		return py_ue_new_uscriptstruct(FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR((char *)"Guid")), (uint8 *)&guid);
+		return py_ue_new_owned_uscriptstruct(FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR((char *)"Guid")), (uint8 *)&guid);
 	}
 
 	return PyErr_Format(PyExc_Exception, "unable to build FGuid");
@@ -459,7 +478,7 @@ PyObject *py_unreal_engine_new_guid(PyObject * self, PyObject * args)
 
 	FGuid guid = FGuid::NewGuid();
 
-	return py_ue_new_uscriptstruct(FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR((char *)"Guid")), (uint8 *)&guid);
+	return py_ue_new_owned_uscriptstruct(FindObject<UScriptStruct>(ANY_PACKAGE, UTF8_TO_TCHAR((char *)"Guid")), (uint8 *)&guid);
 }
 
 PyObject *py_unreal_engine_guid_to_string(PyObject * self, PyObject * args)
@@ -479,24 +498,43 @@ PyObject *py_unreal_engine_guid_to_string(PyObject * self, PyObject * args)
 
 PyObject *py_unreal_engine_slate_tick(PyObject * self, PyObject * args)
 {
+	Py_BEGIN_ALLOW_THREADS;
 	FSlateApplication::Get().PumpMessages();
 	FSlateApplication::Get().Tick();
+	Py_END_ALLOW_THREADS;
 	Py_RETURN_NONE;
 }
 
 PyObject *py_unreal_engine_engine_tick(PyObject * self, PyObject * args)
 {
 	float delta_seconds = FApp::GetDeltaTime();
-	PyObject *py_bool = nullptr;
-	if (!PyArg_ParseTuple(args, "|fO:engine_tick", &delta_seconds, &py_bool))
+	PyObject *py_idle = nullptr;
+	if (!PyArg_ParseTuple(args, "|fO:engine_tick", &delta_seconds, &py_idle))
 	{
-		return NULL;
+		return nullptr;
 	}
 
-	GEngine->Tick(delta_seconds, (py_bool && PyObject_IsTrue(py_bool)) ? true : false);
+	bool bIdle = false;
+	if (py_idle && PyObject_IsTrue(py_idle))
+		bIdle = true;
+
+	Py_BEGIN_ALLOW_THREADS;
+	GEngine->Tick(delta_seconds, bIdle);
+	Py_END_ALLOW_THREADS;
 
 	Py_RETURN_NONE;
 }
+
+#if WITH_EDITOR
+PyObject *py_unreal_engine_tick_rendering_tickables(PyObject * self, PyObject * args)
+{
+	Py_BEGIN_ALLOW_THREADS;
+	TickRenderingTickables();
+	Py_END_ALLOW_THREADS;
+
+	Py_RETURN_NONE;
+}
+#endif
 
 PyObject *py_unreal_engine_get_delta_time(PyObject * self, PyObject * args)
 {
@@ -530,20 +568,12 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 	uint64 flags = (uint64)(RF_Public);
 	if (!PyArg_ParseTuple(args, "O|OsK:new_object", &obj, &py_outer, &name, &flags))
 	{
-		return NULL;
+		return nullptr;
 	}
 
-	if (!ue_is_pyuobject(obj))
-	{
-		return PyErr_Format(PyExc_Exception, "argument is not a UObject");
-	}
-
-	ue_PyUObject *py_obj = (ue_PyUObject *)obj;
-
-	if (!py_obj->ue_object->IsA<UClass>())
+	UClass *obj_class = ue_py_check_type<UClass>(obj);
+	if (!obj_class)
 		return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
-
-	UClass *obj_class = (UClass *)py_obj->ue_object;
 
 	FName f_name = NAME_None;
 
@@ -556,21 +586,20 @@ PyObject *py_unreal_engine_new_object(PyObject * self, PyObject * args)
 
 	if (py_outer && py_outer != Py_None)
 	{
-		if (!ue_is_pyuobject(py_outer))
-		{
+		outer = ue_py_check_type<UObject>(py_outer);
+		if (!outer)
 			return PyErr_Format(PyExc_Exception, "argument is not a UObject");
-		}
-
-		ue_PyUObject *py_outer_obj = (ue_PyUObject *)py_outer;
-
-		outer = py_outer_obj->ue_object;
 	}
 
-	UObject *new_object = NewObject<UObject>(outer, obj_class, f_name, (EObjectFlags)flags);
+	UObject *new_object = nullptr;
+	Py_BEGIN_ALLOW_THREADS;
+	new_object = NewObject<UObject>(outer, obj_class, f_name, (EObjectFlags)flags);
+	if (new_object)
+		new_object->PostLoad();
+	Py_END_ALLOW_THREADS;
+
 	if (!new_object)
 		return PyErr_Format(PyExc_Exception, "unable to create object");
-
-	new_object->PostLoad();
 
 	Py_RETURN_UOBJECT(new_object);
 }
@@ -579,7 +608,7 @@ PyObject *py_unreal_engine_get_mutable_default(PyObject * self, PyObject * args)
 {
 
 	PyObject *obj;
-	if (!PyArg_ParseTuple(args, "O|Os:new_object", &obj))
+	if (!PyArg_ParseTuple(args, "O|Os:get_mutable_default", &obj))
 	{
 		return NULL;
 	}
@@ -695,7 +724,8 @@ PyObject *py_unreal_engine_tobject_iterator(PyObject * self, PyObject * args)
 PyObject *py_unreal_engine_create_and_dispatch_when_ready(PyObject * self, PyObject * args)
 {
 	PyObject *py_callable;
-	if (!PyArg_ParseTuple(args, "O:create_and_dispatch_when_ready", &py_callable))
+	int named_thread = (int)ENamedThreads::GameThread;
+	if (!PyArg_ParseTuple(args, "O|i:create_and_dispatch_when_ready", &py_callable, &named_thread))
 	{
 		return NULL;
 	}
@@ -704,6 +734,7 @@ PyObject *py_unreal_engine_create_and_dispatch_when_ready(PyObject * self, PyObj
 		return PyErr_Format(PyExc_TypeError, "argument is not callable");
 
 	Py_INCREF(py_callable);
+
 
 	FGraphEventRef task = FFunctionGraphTask::CreateAndDispatchWhenReady([&]() {
 		FScopePythonGIL gil;
@@ -717,15 +748,55 @@ PyObject *py_unreal_engine_create_and_dispatch_when_ready(PyObject * self, PyObj
 			unreal_engine_py_log_error();
 		}
 		Py_DECREF(py_callable);
-	}, TStatId(), nullptr, ENamedThreads::GameThread);
+	}, TStatId(), nullptr, (ENamedThreads::Type)named_thread);
 
+
+	Py_BEGIN_ALLOW_THREADS;
 	FTaskGraphInterface::Get().WaitUntilTaskCompletes(task);
+	Py_END_ALLOW_THREADS;
 	// TODO Implement signal triggering in addition to WaitUntilTaskCompletes
 	// FTaskGraphInterface::Get().TriggerEventWhenTaskCompletes
 
-	Py_INCREF(Py_None);
-	return Py_None;
+	Py_RETURN_NONE;
 }
+
+
+#if PLATFORM_MAC
+PyObject *py_unreal_engine_main_thread_call(PyObject * self, PyObject * args)
+{
+	PyObject *py_callable;
+	if (!PyArg_ParseTuple(args, "O|:main_thread_call", &py_callable))
+	{
+		return NULL;
+	}
+
+	if (!PyCallable_Check(py_callable))
+		return PyErr_Format(PyExc_TypeError, "argument is not callable");
+
+	Py_INCREF(py_callable);
+
+	Py_BEGIN_ALLOW_THREADS;
+	MainThreadCall(^{
+		FScopePythonGIL gil;
+		PyObject *ret = PyObject_CallObject(py_callable, nullptr);
+		if (ret)
+		{
+			Py_DECREF(ret);
+		}
+		else
+		{
+			unreal_engine_py_log_error();
+		}
+		Py_DECREF(py_callable);
+		});
+	Py_END_ALLOW_THREADS;
+
+	Py_RETURN_NONE;
+}
+#endif
+
+
+
 
 PyObject *py_unreal_engine_get_game_viewport_size(PyObject *self, PyObject * args)
 {

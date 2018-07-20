@@ -1,10 +1,14 @@
 #pragma once
 
 #include "UEPySCompoundWidget.h"
+#include "UnrealEnginePython.h"
+#include "Runtime/Slate/Public/Widgets/Views/STableRow.h"
+#include "Runtime/Slate/Public/Widgets/Views/STableViewBase.h"
+#include "Runtime/Slate/Public/Widgets/Views/SListView.h"
 
 extern PyTypeObject ue_PySCompoundWidgetType;
 extern PyTypeObject ue_PySTableViewBaseType;
-class SPythonMultiColumnTableRow : public SMultiColumnTableRow<TSharedPtr<struct FPythonItem>>
+class SPythonMultiColumnTableRow : public SMultiColumnTableRow<TSharedPtr<FPythonItem>>
 {
 public:
 	SLATE_BEGIN_ARGS(SPythonMultiColumnTableRow) {}
@@ -13,7 +17,7 @@ public:
 	void Construct(const FArguments& InArgs, const TSharedRef<STableViewBase>& InOwnerTableView, PyObject *in_py_self)
 	{
 		SetPyObject(in_py_self);
-		SMultiColumnTableRow<TSharedPtr<struct FPythonItem>>::Construct(FSuperRowType::FArguments(), InOwnerTableView);
+		SMultiColumnTableRow<TSharedPtr<FPythonItem>>::Construct(FSuperRowType::FArguments(), InOwnerTableView);
 	}
 
 	TSharedRef<SWidget> GenerateWidgetForColumn(const FName& ColumnName)
@@ -24,7 +28,7 @@ public:
 			return SNullWidget::NullWidget;
 
 		PyObject *py_callable_generate_widget_for_column = PyObject_GetAttrString(self, (char *)"generate_widget_for_column");
-		if (!PyCalllable_Check_Extended(py_callable_generate_widget_for_column))
+		if (!PyCallable_Check(py_callable_generate_widget_for_column))
 		{
 			UE_LOG(LogPython, Error, TEXT("generate_widget_for_column is not a callable"));
 			return SNullWidget::NullWidget;
@@ -57,7 +61,7 @@ public:
 		if (PyObject_HasAttrString(self, (char *)"on_mouse_button_double_click"))
 		{
 			PyObject *py_callable_on_mouse_button_double_click = PyObject_GetAttrString(self, (char *)"on_mouse_button_double_click");
-			if (!PyCalllable_Check_Extended(py_callable_on_mouse_button_double_click))
+			if (!PyCallable_Check(py_callable_on_mouse_button_double_click))
 			{
 				UE_LOG(LogPython, Error, TEXT("on_mouse_button_double_click is not a callable"));
 				return FReply::Unhandled();
@@ -91,7 +95,7 @@ public:
 private:
 	PyObject * self = nullptr;
 
-	TSharedPtr<struct FPythonItem> RowPythonObject;
+	TSharedPtr<FPythonItem> RowPythonObject;
 };
 
 typedef struct

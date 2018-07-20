@@ -12,12 +12,12 @@
     0
   ],
   "MaterialConnections": [
-    "ms_BaseColor",
     "ms_Metallic",
     "ms_Roughness",
     "ms_Normal",
     "ms_WorldDisplacement",
-    "ms_TessellationMultiplier"
+    "ms_TessellationMultiplier",
+    "ms_BaseColor"
   ],
   "MaterialName": "Standard_MasterMaterial",
   "MaterialProperties": [

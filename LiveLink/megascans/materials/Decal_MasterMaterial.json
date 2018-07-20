@@ -12,11 +12,11 @@
     0
   ],
   "MaterialConnections": [
-    "ms_BaseColor",
+    "ms_Metallic",
     "ms_Roughness",
     "ms_Normal",
     "ms_Opacity",
-    "ms_Metallic"
+    "ms_BaseColor"
   ],
   "MaterialName": "Decal_MasterMaterial",
   "MaterialProperties": [

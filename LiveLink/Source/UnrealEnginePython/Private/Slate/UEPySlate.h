@@ -2,8 +2,7 @@
 
 #include "UEPyModule.h"
 
-#include "SlateBasics.h"
-#include "SlateExtras.h"
+#include "Runtime/SlateCore/Public/Widgets/DeclarativeSyntaxSupport.h"
 
 
 #if WITH_EDITOR
@@ -80,7 +79,7 @@ template<typename T> ue_PySWidget *py_ue_new_swidget(TSharedRef<SWidget> s_widge
 	ue_PySWidget *ret = (ue_PySWidget *)PyObject_New(T, py_type);
 
 	new(&ret->Widget) TSharedRef<SWidget>(s_widget);
-
+	ret->weakreflist = nullptr;
 	return ret;
 }
 
@@ -107,7 +106,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 {\
 	PyObject *value = ue_py_dict_get_item(kwargs, _param);\
 	if (value) {\
-		if (PyCalllable_Check_Extended(value)) {\
+		if (PyCallable_Check(value)) {\
 			_base handler;\
 			TSharedRef<FPythonSlateDelegate> py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewDeferredSlateDelegate(value);\
 			handler.Bind(py_delegate, &FPythonSlateDelegate::_func);\
@@ -119,7 +118,7 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 {\
 	PyObject *value = ue_py_dict_get_item(kwargs, _param);\
 	if (value) {\
-		if (PyCalllable_Check_Extended(value)) {\
+		if (PyCallable_Check(value)) {\
 			_base handler;\
 			TSharedRef<FPythonSlateDelegate> py_delegate = FUnrealEnginePythonHouseKeeper::Get()->NewDeferredSlateDelegate(value);\
 			handler.BindSP(py_delegate, &FPythonSlateDelegate::_func);\
@@ -138,14 +137,14 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 
 #define ue_py_slate_farguments_text(param, attribute) ue_py_slate_up(FText, GetterFText, param, attribute)\
 	else if (PyUnicode_Check(value)) {\
-		arguments.attribute(FText::FromString(UTF8_TO_TCHAR(PyUnicode_AsUTF8(value))));\
+		arguments.attribute(FText::FromString(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(value))));\
 	}\
 	ue_py_slate_down(param)
 
 
 #define ue_py_slate_farguments_string(param, attribute) ue_py_slate_up(FString, GetterFString, param, attribute)\
 	else if (PyUnicode_Check(value)) {\
-		arguments.attribute(UTF8_TO_TCHAR(PyUnicode_AsUTF8(value)));\
+		arguments.attribute(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(value)));\
 	}\
 	ue_py_slate_down(param)
 
@@ -344,14 +343,14 @@ ue_PySWidget *ue_py_get_swidget(TSharedRef<SWidget> s_widget);
 
 #define ue_py_slate_farguments_optional_string(param, attribute) { PyObject *value = ue_py_dict_get_item(kwargs, param);\
 	if (PyUnicode_Check(value)) {\
-		arguments.attribute(UTF8_TO_TCHAR(PyUnicode_AsUTF8(value)));\
+		arguments.attribute(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(value)));\
 	}\
 }
 
 #define ue_py_slate_farguments_optional_text(param, attribute) { PyObject *value = ue_py_dict_get_item(kwargs, param);\
 	if (value) {\
 		if (PyUnicode_Check(value)) {\
-			arguments.attribute(FText::FromString(UTF8_TO_TCHAR(PyUnicode_AsUTF8(value))));\
+			arguments.attribute(FText::FromString(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(value))));\
 		}\
 		else {\
 				PyErr_SetString(PyExc_TypeError, "unsupported type for attribute " param); \
