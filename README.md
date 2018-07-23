@@ -1,58 +1,176 @@
 # Megascans - Unreal Engine LiveLink
 
-The Megascans **LiveLink** for Unreal Engine 4 is an **open-source, python-written** integration for Megascans inside unreal engine 4. The plugin is written with UnrealEnginePython and is available for UE4 versions **4.15 and above**.
+The Megascans **LiveLink** for Unreal Engine 4 is an **open-source, python-written** integration for Megascans inside unreal engine 4. The plugin is written with **[UnrealEnginePython](https://github.com/20tab/UnrealEnginePython)** and is available for UE4 versions **4.15 and above**.
+
+UnrealEnginePython is developed by Roberto De Ioris (20Tab S.r.l, [20tab.com](http://20tab.com)) with sponsorship from Accademia Italiana Videogiochi ([aiv01.it](http://aiv01.it)), Kite & Lightning ([kiteandlightning.la](http://kiteandlightning.la/)),  GOODTH.INC ([goodthinc.com](https://www.goodthinc.com/)) and QUIXEL AB (Quixel.se).
+
 Windows binaries are currently provided, and **OSX and Linux coming soon**.
+
+If you're facing issues with and this documentation isn't helping you please let us know : **[support@quixel.se](mailto:support@quixe.se)** . We'll help you get things fixed ASAP.
+
 ##
-![Art By Wiktor Öhman](https://cdnb.artstation.com/p/assets/images/images/011/106/221/large/wiktor-ohman-final-unbranded.jpg?1527869888)Art By Wiktor Öhman
+![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/unreal_viewport.jpg)
 
 ## Installing the LiveLink with Megascans Bridge
 Megascans is an ecosystem consisting of a huge scan library and a set of tools to help you work with that library, and Bridge is one of those tools.
-Megascans Bridge lets you Instantly access the entire Megascans library, batch export straight to your game engine or 3D software, and unleash your imagination.
+Megascans Bridge lets you Instantly access the entire Megascans library, batch export straight to your game engine or 3D software, and unleash your imagination without having to waste time on importing assets.
 
-To install the LiveLink with Bridge :
-- go to https://megascans.se/apps/bridge and download it.
-- Click on the export icon of any asset in your downloaded library, set the "Application" to UE4 and click on "Download Plugin".
-- Once the plugin is downloaded.
-- go to https://megascans.se/apps/bridge and download it.
+How to install the LiveLink with Bridge :
 
-Now you can start UE4 and a megascans button should be on your toolbar. Simply click on the export button of any asset in Bridge and it'll be sent to Unreal.
+One minute video guide (Recommended) : [Video Installation Tutorial](https://www.youtube.com/watch?v=WUNdfZM9cps)
+
+Manual instructions :
+
+- go to https://megascans.se/apps/bridge and download it.
+- Click on the export icon of any asset in your downloaded library, this will open the export options pop-up. set the "Application" drop-down to "Unreal Engine" and click on "Download Plugin". 
+
+- Once the plugin is downloaded you'll need to select which version of unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official unreal engine version just just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom unreal engine build then pick up the **"Custom Build"** option in that drop-down.
+
+- Now set the "Engine Version Path" option to where your engine's plugins are installed, like this for instance: **C:\Program Files\Epic Games\UE_4.20\Engine\Plugins**. The path should basically be where your engine's plugins are installed.
+
+- As soon as you've picked the version and the path in the previous step, Bridge will notify you that it's currently installing the plugin, and once it's done it will tell you in a pop-up. 
+
+- Once the installation is done, simply start or restart unreal and click on the green "Export" button in the export dialog of any asset you want to export in Bridge in Bridge. 
+
+	-  **Optional for building the plugin on an OS other than Windows** : If you're looking into building the Megascans LiveLink plugin on a non-windows platform, you'll need to build PySide2 with a python installation on your system (`  
+pip install PySide2`), then copy the PySide2 folder from the python/lib/site-packages folder to the UnrealEnginePython/Binaries/Win64 folder. You can confirm to replace if it's asking you to remove an existing installation.
+
+This is what your installation settings for unreal engine 4.19 would look like :
+
+![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/official_build.png)
+
+
+This is what your installation settings for a custom build would look like :
+
+![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/custom_build.png)
 
 ##
-![Art By Wiktor Öhman](https://cdnb.artstation.com/p/assets/images/images/010/357/747/large/wiktor-ohman-pubg.jpg?1523996697)Art By Wiktor Öhman
 
-## Installing the LiveLink Manually
-If you're looking into installing the Megascans LiveLink on a custom Unreal Engine Build, compiling the plugin should be a fairly straightforward task.
-First, you need to install **Python 3.6 - 64Bits** on your computer, you can download the latest [version right here](https://www.python.org/downloads/).
+The LiveLink currently relies on a hard-coded port to receive data from Megascans Bridge : **13428**. It can only work with one engine open on your system at a time.
 
-Once you've installed it please make sure that the python installation path is in your environment variable paths. This should be the case by default as soon as you've installed it, but a quick checkup won't hurt.
-Now the next step is to go to your unreal engine installation, then "**engine/plugins**" and create a folder in there called "**UnrealEnginePython**". Clone the [Github repository of the LiveLink](https://github.com/Quixel/Megascans-UE4LiveLink) and then copy the content of the folder **LiveLink** to the **UnrealEnginePython** folder you created earlier.
-This current setup might create a conflict if you're already using UnrealEnginePython from 20Tab, and it's something we intend to change in the near future.
 
-Now if you start the engine it should ask you to compile the DLLs for the plugin, which you will accept to do.
-This will take some time depending on what else there is to compile on your engine and how fast your computer is.
+##
+![ - ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/img_02.jpg)
 
-> **For OSX/Linux ONLY** : This procedure has only been tested on Windows so far. If you're looking into building the LiveLink for Linux or OSX please consider the following steps :
->
->  - Download the latest PySide2 "wheels" for Linux, OSX or Windows **[right here](http://download.qt.io/snapshots/ci/pyside/dev/latest/pyside2/)**. Read the name of the files very carefully to make sure you're using the correct version.
->  
->  - Build PySide2 using the following line in your system's command line tool (*change the path and filename to your specific needs*) : 
-> ``
-> pip install C:/My_Wheels_Path/PySide2-Super_Long_Wheel_Name.whl
-> ``
-> - You should now have PySide2 installed in your python directory, mine is right here :
->      **C:\Python36\Lib\site-packages\PySide2**
-> Now delete the PySide2 folder in **UnrealEnginePython/Binaries/Win64** and put the one you just built instead.
-> The file is very heavy by default, just so you know. There are a lot of dependencies that you can remove to make it as lightweight as the solution we provide by default, but it's a very time-consuming task generally.
-> 
-> - That's about it ! PySide2 is the only dependency that's a bit hard to build right now unfortunately, so this step is necessary.
-> We hope to provide a pre-compiled version of PySide2 at some point for all systems, and even have an alternative Slate-based user interface just to remove this extra step that can pose issues in the future.
-> 
-> And that should be it ! Once the compilation is done you should see the Megascans Logo in your toolbar. There are still a bunch of issues related to PySide2 (*UI is not visible within a C++ project on 4.17, or can be buggy on OSX*), but overall you should be up and running with this.
+## User Interface and Functionalities
 
-When you export an asset from the Bridge, pick up the "Custom Build" option in the "Build Version" dropdown menu, then click on export.
+![](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/livelink_ui.png)
 
-The LiveLink currently relies on a hard-coded port to receive data from Megascans Bridge : **13428**.
-If you happen to have two versions of unreal running at the same time, a prompt window will pop-up warning you about the port not being usable since it's already controlled by another software/process.
+
+This window is expected to receive many updates during the next few months, as we keep adding more features to give you the best Unreal Engine integration possible. With that said, let’s dig in:
+  
+
+![](https://lh4.googleusercontent.com/H3dzRrPsW2JDmz65SAcM4N2MsJ1vANTsrD4LbyO92r4xwY_LkYKoXsBfRyADaKRXzur-gErBtBGX_dBOEVf9ocVDQSVvJWUKAq16sGQt-Xxm5lhJQh0-izLbAHl7PC0yLoJv5957)![](https://lh4.googleusercontent.com/z1E-BHdbic2aPxcd4NdPZVUwZHZE_oFLyx1jbA1b9-cFp_ltzHMa0Ci3Ne9XcJwMfjOc-d7vKGAISXpJE2yvQHB8qaRrQqXmiG0s0pUWJzgVeKdGK7P714NLZ3a_8CIbCFHxSEHg)
+
+  
+
+The top-most bar has a close and minimize button. By clicking the Megascans icon you will access a context menu including an always on top toggle, access to help documentation, a one-click jump to megascans.se, and more information about the plugin.
+
+  
+
+## The Blend Material Workflow
+
+![](https://lh6.googleusercontent.com/YO1CjzaDVtGhz3lZo1g48F4v6lY7TppD2DodOw7GkDDjSzHK33SMCopsW0v4bchLM7G_eklZQn1mFCPO8lgDW708zmdrjYVt7OTO9wUp4eogjkul1ZvaTiIuOJz-4UgAta_-dF28)
+
+  
+
+Quick Video Guide - [Blend Materials Workflow](https://www.youtube.com/watch?v=wfHJ0zYgsdU)
+
+  
+
+The LiveLink comes with a really neat blend-based master material that has support for up to three different texture sets, world-aligned blend, fuzzy shading, per-layer attribute editing and much, much more.
+
+  
+
+To create a the assets you wanblend material simply select 2 or 3 material instances of t to import in the content browser, then click “Create Material Blend”:
+
+  
+
+![](https://lh3.googleusercontent.com/YrlczKlhIrnIxpeQI-Cf8yvrL6l8CnuZa53_ZnyEQTyOt40lSi1p9IC95w9yGZ1zVHHrrytaT2G8JdoJX0QVmAeGuy_mUMPka6QzWWO0AfhTw6D30PNds0J1QIz8_WoggNNXKhKH)
+
+  
+
+In this specific screenshot we’ve selected three assets in the content browser: the first selection is the moss, which will be the topmost layer, second is the forest ground, which is the middle layer, and third is a generic mud soil, which is the bottom layer.
+
+  
+
+You can control the middle and bottom layers with the R and G vertex channels by vertex painting on your mesh, and the topmost layer can be controlled with the World-Aligned Blend feature that you can enable in your material instance.
+
+  
+
+You can use the B vertex channel to paint water puddles.
+
+  
+
+This workflow may seem a little daunting at first, but with a little experience you’ll find yourself creating and modifying these blend materials really fast. You can also use your own custom blend master material, just make sure all texture parameters inside the master material use the following naming conventions:
+
+  
+
+-   Base Albedo, Base Normal, Base Roughness and so on for the base layer.
+    
+-   R Albedo, R Normal, R Roughness and so on for the Red vertex channel.
+    
+-   G Albedo, G Normal, G Roughness and so on for the Green vertex channel.
+    
+-   B Albedo, B Normal, B Roughness and so on for the Blue vertex channel.
+    
+-   A Albedo, A Normal, A Roughness and so on for the Alpha vertex channel.
+    
+
+  
+
+This is how a base albedo is set up in the default master material, for instance:
+
+  
+
+![](https://lh6.googleusercontent.com/fxSA05XY_LclzoPtzWX3khvx3mnpnuEOJ1vUYRBG30ierO4R0p-W5DhhfuCyx7sICYvhGf_yIYoDkGqr8MmT1BKBLuGsdQD3Csxsvvd4MvcaMSmVjmgdWalGYQheGM-EnEXVyXTb)
+
+  
+
+If you follow this naming convention the LiveLink will auto-detect all textures that need to be connected and do its job accordingly.
+
+  
+
+## Using Custom Master Materials
+
+![](https://lh5.googleusercontent.com/YFh8MozjqzHhFXSAv9uyJeY4UqMN98Dqqhg3ewyZdRgPdpC5TcZXxtjROgdJVFdRfAYKNf5X70iKrEgjM6BypnR18k_WbeitGHaPq1qlF1Hfas0UF3kWjh8svx9mi_StPPNUSgOH)
+
+  
+
+Quick Video Guide - [Custom Master Materials Workflow](https://www.youtube.com/watch?v=RDiWgZyDI-Y)
+
+  
+
+The LiveLink comes with all the master materials needed to use the library, but using your own master materials is also possible and very easy to set up.
+
+  
+
+After following the naming conventions discussed in the previous section, save your master material and click on the arrow icon on the LiveLink window while your master material is selected in the content browser. It will now be used as the default master material for a specific category.
+
+  
+
+You can change the categories by clicking the “Surface” dropdown button at the top-left of the LiveLink window, there you have a list of all the different asset types, each one having their own master material that you can change.
+
+  
+
+## Working with Foliage and Scatter assets
+
+![](https://lh4.googleusercontent.com/qL4k5vSGCw7XvGV9X7_vF7Jr7O_Ps3ADQdylSOOZhPHVnf8Eig-C4OP5uLYJRFrIDUiP6lV1s20vuHBw1uzZe6mflIX-KGgbhG96GcI9DPhy1PfIHj60wIFFmW8NSrWMOaPTeNa8)
+
+  
+
+Quick Video Guide - [Scatter and Foliage Workflow](https://www.youtube.com/watch?v=Tx3Gbmesu_w)
+
+  
+
+One of the aspects of the LiveLink we’ve worked on the most was the scatter/foliage system. Unreal already has a robust foliage editor and with the Megascans LiveLink you can scatter your assets in a click or two.
+
+  
+
+If you want to automatically populate your foliage editor’s asset list with the latest imported assets, check the “Auto-Populate Foliage Painter” checkbox in the LiveLink window and then click on export in Bridge to immediately start painting inside UE4.
+
+
+
 
 ##
 ![ - ](https://i.imgur.com/IrnXhDI.png)
@@ -125,7 +243,4 @@ ue.sync_browser_to_assets(ue.get_assets(folderpath_))
 
 ```
 
-
-
-That file should give you an idea on how to interact with the Megascans LiveLink and UnrealEnginePython in general. If you have any questions feel free to check the UnrealEnginePython GitHub page or send a, email to adnan at quixel.se!
-
+That file should give you an idea on how to interact with the Megascans LiveLink and UnrealEnginePython in general. If you have any questions feel free to check the UnrealEnginePython GitHub page or send a, email to adnan at quixel.se !
