@@ -1504,6 +1504,7 @@ async def ms_simple_timer(frequency):
                 material_setup = []
 
         except Exception as e:
+            # print("Found something but got an error")
             # print('Error Line : {}'.format(sys.exc_info()
                                            # [-1].tb_lineno), type(e).__name__, e)
             pass
