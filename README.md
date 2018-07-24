@@ -27,7 +27,7 @@ Manual instructions :
 - go to https://megascans.se/apps/bridge and download it.
 - Click on the export icon of any asset in your downloaded library, this will open the export options pop-up. set the "Application" drop-down to "Unreal Engine" and click on "Download Plugin". 
 
-- Once the plugin is downloaded you'll need to select which version of unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official unreal engine version just just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom unreal engine build then pick up the **"Custom Build"** option in that drop-down.
+- Once the plugin is downloaded you'll need to select which version of unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official unreal engine version just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom unreal engine build then pick up the **"Custom Build"** option in that drop-down.
 
 - Now set the "Engine Version Path" option to where your engine's plugins are installed, like this for instance: **C:\Program Files\Epic Games\UE_4.20\Engine\Plugins**. The path should basically be where your engine's plugins are installed.
 
