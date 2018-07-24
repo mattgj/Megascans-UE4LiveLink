@@ -6,7 +6,7 @@ UnrealEnginePython is developed by Roberto De Ioris (20Tab S.r.l, [20tab.com](ht
 
 Windows binaries are currently provided, and **OSX and Linux coming soon**.
 
-If you're facing issues with and this documentation isn't helping you please let us know : **[support@quixel.se](mailto:support@quixe.se)** . We'll help you get things fixed ASAP.
+If you're facing issues and this documentation isn't helping you please let us know : **[support@quixel.se](mailto:support@quixe.se)** . We'll help you get things fixed ASAP.
 
 ##
 ![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/unreal_viewport.jpg)
