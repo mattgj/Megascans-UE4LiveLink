@@ -62,6 +62,14 @@ You can still use the plugin as normal, and expect C++ compatibility soon !")
     print('C++ Project Detected, UI not available in the current version.')
     pass
 
+# app = QApplication(sys.argv)
+
+def ticker_loop(delta_time):
+    app.processEvents()
+    return True
+
+ticker = ue.add_ticker(ticker_loop)
+
 
 def ue_exception(_type, value, back):
 
@@ -372,6 +380,27 @@ QMenu::item
 """)
 
 
+stylesheet_ = ("""
+
+QCheckBox { background: transparent; color: #E6E6E6; font-family: Source Sans Pro; font-size: 14px; }
+QCheckBox::indicator:hover { border: 2px solid #2B98F0; background-color: transparent; }
+QCheckBox::indicator:checked:hover { background-color: #18191b; border: 2px solid #73a5ce; }
+QCheckBox:indicator{ color: #67696a; background-color: transparent; border: 2px solid #67696a;
+width: 14px; height: 14px; border-radius: 2px; }
+QCheckBox::indicator:checked { border: 2px solid #2B98F0; image: url(CheckedIMG);
+background-color: #18191b; text-color: #ffffff; }
+QCheckBox::hover { spacing: 12px; background: transparent; color: #ffffff; }
+QCheckBox::checked { color: #ffffff; }
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled { border: 1px solid #444; }
+QCheckBox:disabled { background: transparent; color: #414141; font-family: Source Sans Pro;
+font-size: 14px; margin: 0px; text-align: center; }
+
+QComboBox { color: #FFFFFF; font-size: 14px; padding: 2px 2px 2px 8px; font-family: Source Sans Pro;
+selection-background-color: #1d1e1f; background-color: #2c2f31; }
+QComboBox:hover { color: #c9c9c9; font-size: 14px; padding: 2px 2px 2px 8px; font-family: Source Sans Pro;
+selection-background-color: #232426; background-color: #232426; } """)
+
+
 class QBaseButton(QPushButton):
 
     def __init__(self, request):
@@ -652,7 +681,7 @@ class megascans_livelink_ui(QDialog):
 
         self.setMask(self.geometry())
         self.setWindowOpacity(1)
-        # self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        #self.setWindowFlags(Qt.WindowStaysOnTopHint)
         # self.setWindowFlags(Qt.X11BypassWindowManagerHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
 
@@ -719,7 +748,8 @@ class megascans_livelink_ui(QDialog):
 
         self.obj_type = QComboBox()
         self.obj_type.setToolTip("Scroll or click over to show the\n supported material types per category")
-        self.obj_type.setStyleSheet(material_style)
+        #self.obj_type.setStyleSheet(material_style)
+        self.obj_type.setStyleSheet(stylesheet_)
         self.assets_layout.addWidget(self.obj_type)
         self.obj_type.setMinimumHeight(32)
         self.obj_type.currentIndexChanged.connect(self.Change_Material_ui)
@@ -1031,7 +1061,7 @@ class megascans_livelink_ui(QDialog):
         menu = QMenu(self)
         menu.setStyleSheet(PrefsMenuStyle)
 
-        always_top =  QAction('Toggle Always On Top', self)
+        # always_top =  QAction('Toggle Always On Top', self)
 
         open_ms_se =  QAction('Visit Megascans.se', self)
 
@@ -1039,7 +1069,7 @@ class megascans_livelink_ui(QDialog):
 
         about_ =  QAction('About', self)
 
-        menu.addAction(always_top)
+        # menu.addAction(always_top)
         # menu.addSeparator()
         menu.addAction(open_ms_se)
         # menu.addSeparator()
@@ -1049,9 +1079,9 @@ class megascans_livelink_ui(QDialog):
 
         action = menu.exec_(QCursor.pos())
 
-        if action == always_top:
-            self.setWindowFlags(self.windowFlags() ^ Qt.WindowStaysOnTopHint)
-            self.show()
+        # if action == always_top:
+            # self.setWindowFlags(self.windowFlags() ^ Qt.WindowStaysOnTopHint)
+            # self.show()
 
         if action == open_ms_se:
             webbrowser.open('https://megascans.se/')
@@ -1060,68 +1090,28 @@ class megascans_livelink_ui(QDialog):
             webbrowser.open('https://d3uwib8iif8w1p.cloudfront.net/bridge/plugins/Megascans_Bridge_Unreal_Integration.pdf')
 
         if action == about_:
-            self.aboutwin = MsAboutWin()
-            self.aboutwin.show()
 
+            widget = MsAboutWin()
+            self.aboutWin = widget
+            widget.show()
+
+            root_window = ue.get_editor_window()
+            root_window.set_as_owner(widget.winId())
+
+            
 ##########################################################################################
 ##########################################################################################
 ##########################################################################################
-
-
-def ui_ticker_loop(delta_time):
-    try:
-        loop.stop()
-        loop.run_forever()
-    except Exception as e:
-        ue.log_error(e)
-    return True
-
-
-async def ui_simple_timer(frequency, base_handle, window):
-    while True:
-        try:
-            await asyncio.sleep(frequency)
-
-            if not window.State:
-                print("Megascans UI closed...")
-                break
-                
-            handle = ctypes.windll.user32.GetForegroundWindow()
-            if handle != base_handle and handle != window.winId():
-                try:
-                    window.hide()
-                except:
-                    pass
-            else:
-                try:
-                    window.show()
-                except:
-                    pass
-
-        except Exception as e:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(' Error Info : ' + str(exc_value))
-            print('Error Line : {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e)
-            print("Encountered error during asyncIO listener, closing all open ports...")
-            break
-
 
 for win in app.topLevelWidgets():
     win.close()
 
-# Set our PySide2 event loop.
-def _qt_event_loop():
-    app.processEvents()
-    app.sendPostedEvents(None, 0)
 
-
-ue.add_ticker(_qt_event_loop, 10)
+#ue.add_ticker(_qt_event_loop, 10)
+#win = megascans_livelink_ui()
 win = megascans_livelink_ui()
-win.show_win()
+win.show()
 
-
-
-
-
-
+root_window = ue.get_editor_window()
+root_window.set_as_owner(win.winId())
 
