@@ -1519,7 +1519,7 @@ async def spawn_server(host, port):
         ue.log('tcp server ended')
     
 # spawn the server coroutine (no need for timers or sleeps)
-asyncio.ensure_future(spawn_server('127.0.0.1', 16384))
+asyncio.ensure_future(spawn_server('127.0.0.1', 13428))
 
 
 
