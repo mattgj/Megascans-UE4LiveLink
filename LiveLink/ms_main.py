@@ -208,10 +208,7 @@ def ms_get_import_data(material_setup):
     try:
         export_array = []
         data = None
-
-        data = material_setup
-
-        json_array = json.loads(data)
+        json_array = json.loads(material_setup)
 
         for js_ in json_array:
 
@@ -628,12 +625,10 @@ def ms_form_base_structure():
         if os.path.exists(os.path.join(content_path, 'Megascans')):
 
             if not os.path.exists(os.path.join(content_path, 'Megascans', 'Blend_Materials')):
-                os.mkdir(os.path.join(content_path,
-                                      'Megascans', 'Blend_Materials'))
+                os.mkdir(os.path.join(content_path, 'Megascans', 'Blend_Materials'))
 
             if not os.path.exists(os.path.join(content_path, 'Megascans', 'Master_Materials')):
-                os.mkdir(os.path.join(content_path,
-                                      'Megascans', 'Master_Materials'))
+                os.mkdir(os.path.join(content_path, 'Megascans', 'Master_Materials'))
 
         resources_fldr = os.path.join(
             ms_return_path(), 'megascans', 'resources')
@@ -1480,31 +1475,53 @@ def ms_bridge_listener_cancel():
         pass
 
 
-async def ms_simple_timer(frequency):
+# cleanup previous tasks
+for task in asyncio.Task.all_tasks():
+    task.cancel()
 
-    socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket_.bind(('localhost', 13428))
-    print("Intialized Timer")
-
+# this is called whenever a new client connects
+async def new_client_connected(reader, writer):
+    name = writer.get_extra_info('peername')
+    ue.log('new client connection from {0}'.format(name))
+    # whole_data will contain the whole stream of bytes
+    whole_data = b''
+    # continue reading until the client does not close the connection
     while True:
-        try:
-            await asyncio.sleep(frequency)
+        # tune 4096 to something more suitable
+        data = await reader.read(4096)
+        # connection closed
+        if not data:
+            break
+        # append data until the connection is closed
+        whole_data += data
 
-            socket_.settimeout(0.025)
-            socket_.listen()
+    # check if the client sent something (whole_data.decode() will transform the byte stream to a string)
+    if len(whole_data) > 0:
+        ms_base_importer(whole_data.decode())
+        ue.log('asset(s) imported')
+        # ue.log('client {0} issued: {1}'.format(name, whole_data.decode()))
+        # do something with the whole_data stuff
+    ue.log('client {0} disconnected'.format(name))
 
-            client, address = socket_.accept()
+# this spawns the server
+# the try/finally trick allows for gentle shutdown of the server
+# see https://github.com/20tab/UnrealEnginePython/blob/master/tutorials/AsyncIOAndUnrealEngine.md
+# for more infos about exception management
+async def spawn_server(host, port):
+    try:
+        # reuse_address will allow to rebind multiple times
+        coro = await asyncio.start_server(new_client_connected, host, port, reuse_address=True)
+        ue.log('tcp server spawned on {0}:{1}'.format(host, port))
+        # continue until the server is not closed (should never happens)
+        await coro.wait_closed()
+    finally:
+        coro.close()
+        ue.log('tcp server ended')
+    
+# spawn the server coroutine (no need for timers or sleeps)
+asyncio.ensure_future(spawn_server('127.0.0.1', 16384))
 
-            material_setup = client.recv(4096*4096)
 
-            if material_setup is not None:
-                ue.log("Imported " + str(len(material_setup)) +
-                       " assets from Megascans Bridge")
-                ms_base_importer(material_setup)
-                material_setup = []
 
-        except Exception as e:
-            # print("Found something but got an error")
-            # print('Error Line : {}'.format(sys.exc_info()
-                                           # [-1].tb_lineno), type(e).__name__, e)
-            pass
+
+

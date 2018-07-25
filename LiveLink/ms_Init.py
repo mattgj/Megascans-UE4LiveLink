@@ -37,7 +37,7 @@ This file is called on editor start and is a requirement as a first-line import 
 
 
 import unreal_engine as ue
-import json, re, os, sys, asyncio, traceback, ctypes, time, clipboard, webbrowser, inspect, socket, threading
+import json, re, os, sys, asyncio, traceback, ctypes, time, clipboard, webbrowser, inspect, socket, threading, ue_asyncio
 from pprint import pprint
 
 from unreal_engine.enums import EMaterialSamplerType, EHorizontalAlignment, EVerticalAlignment

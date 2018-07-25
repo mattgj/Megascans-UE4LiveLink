@@ -10,12 +10,11 @@ ue.exec("ms_main.py")
 def init_megascans_ui():
     ue.exec("ms_user_interface.py")
 
-
 # Initialize our asyncio task. This task will be running in the background to check for new assets to import.
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
-ticker = ue.add_ticker(ms_ticker_loop)
-asyncio.ensure_future(ms_simple_timer(1))
+# loop = asyncio.new_event_loop()
+# asyncio.set_event_loop(loop)
+# ticker = ue.add_ticker(ms_ticker_loop)
+# asyncio.ensure_future(ms_simple_timer(1))
 print("Megascans Integration - LiveLink Initialized...")
 
 # The following snippet is used to create the "Megascans" icon in the UE4 toolbar.
