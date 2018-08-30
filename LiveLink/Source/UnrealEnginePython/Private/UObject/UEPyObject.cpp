@@ -338,9 +338,9 @@ PyObject *py_ue_post_edit_change_property(ue_PyUObject *self, PyObject * args)
 	ue_py_check(self);
 
 	char *prop_name = nullptr;
-	int change_type = 0;
+	int change_type = (int)EPropertyChangeType::Unspecified;
 
-	if (!PyArg_ParseTuple(args, "si:post_edit_change_property", &prop_name, &change_type))
+	if (!PyArg_ParseTuple(args, "s|i:post_edit_change_property", &prop_name, &change_type))
 	{
 		return nullptr;
 	}
@@ -561,8 +561,7 @@ PyObject *py_ue_find_function(ue_PyUObject * self, PyObject * args)
 	UFunction *function = self->ue_object->FindFunction(FName(UTF8_TO_TCHAR(name)));
 	if (!function)
 	{
-		Py_INCREF(Py_None);
-		return Py_None;
+		Py_RETURN_NONE;
 	}
 
 	Py_RETURN_UOBJECT((UObject *)function);
@@ -758,7 +757,7 @@ PyObject *py_ue_set_property_flags(ue_PyUObject *self, PyObject * args)
 	else
 	{
 		u_struct = (UStruct *)self->ue_object->GetClass();
-}
+	}
 
 	UProperty *u_property = u_struct->FindPropertyByName(FName(UTF8_TO_TCHAR(property_name)));
 	if (!u_property)
@@ -806,7 +805,7 @@ PyObject *py_ue_add_property_flags(ue_PyUObject *self, PyObject * args)
 	u_property->SetPropertyFlags(u_property->GetPropertyFlags() | (EPropertyFlags)flags);
 #endif
 	Py_RETURN_NONE;
-	}
+}
 
 PyObject *py_ue_get_property_flags(ue_PyUObject *self, PyObject * args)
 {
@@ -1162,6 +1161,54 @@ PyObject *py_ue_get_uproperty(ue_PyUObject *self, PyObject * args)
 
 }
 
+PyObject *py_ue_get_inner(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	UArrayProperty *u_property = ue_py_check_type<UArrayProperty>(self);
+	if (!u_property)
+		return PyErr_Format(PyExc_Exception, "object is not a UArrayProperty");
+
+	UProperty* inner = u_property->Inner;
+	if (!inner)
+		Py_RETURN_NONE;
+
+	Py_RETURN_UOBJECT(inner);
+}
+
+PyObject *py_ue_get_key_prop(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	UMapProperty *u_property = ue_py_check_type<UMapProperty>(self);
+	if (!u_property)
+		return PyErr_Format(PyExc_Exception, "object is not a UMapProperty");
+
+	UProperty* key = u_property->KeyProp;
+	if (!key)
+		Py_RETURN_NONE;
+
+	Py_RETURN_UOBJECT(key);
+}
+
+PyObject *py_ue_get_value_prop(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	UMapProperty *u_property = ue_py_check_type<UMapProperty>(self);
+	if (!u_property)
+		return PyErr_Format(PyExc_Exception, "object is not a UMapProperty");
+
+	UProperty* value = u_property->ValueProp;
+	if (!value)
+		Py_RETURN_NONE;
+
+	Py_RETURN_UOBJECT(value);
+}
+
 PyObject *py_ue_has_property(ue_PyUObject *self, PyObject * args)
 {
 
@@ -1242,6 +1289,55 @@ PyObject *py_ue_add_to_root(ue_PyUObject *self, PyObject * args)
 	self->ue_object->AddToRoot();
 
 	Py_RETURN_NONE;
+}
+
+PyObject *py_ue_own(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	if (self->owned)
+	{
+		return PyErr_Format(PyExc_Exception, "uobject already owned");
+	}
+
+	Py_DECREF(self);
+
+	self->owned = 1;
+	FUnrealEnginePythonHouseKeeper::Get()->TrackUObject(self->ue_object);
+
+	Py_RETURN_NONE;
+}
+
+PyObject *py_ue_disown(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	if (!self->owned)
+	{
+		return PyErr_Format(PyExc_Exception, "uobject not owned");
+	}
+
+	Py_INCREF(self);
+
+	self->owned = 0;
+	FUnrealEnginePythonHouseKeeper::Get()->UntrackUObject(self->ue_object);
+
+	Py_RETURN_NONE;
+}
+
+PyObject *py_ue_is_owned(ue_PyUObject *self, PyObject * args)
+{
+
+	ue_py_check(self);
+
+	if (!self->owned)
+	{
+		Py_RETURN_FALSE;
+	}
+
+	Py_RETURN_TRUE;
 }
 
 PyObject *py_ue_auto_root(ue_PyUObject *self, PyObject * args)
@@ -1578,7 +1674,7 @@ PyObject *py_ue_add_property(ue_PyUObject * self, PyObject * args)
 			if (is_array || is_map)
 				scope->MarkPendingKill();
 			return PyErr_Format(PyExc_Exception, "unable to allocate new UProperty");
-	}
+		}
 		UMapProperty *u_map = (UMapProperty *)scope;
 
 #if ENGINE_MINOR_VERSION < 20
@@ -1627,7 +1723,7 @@ PyObject *py_ue_add_property(ue_PyUObject * self, PyObject * args)
 		u_map->ValueProp = u_property2;
 
 		u_property = u_map;
-}
+	}
 #endif
 
 	if (u_class == UMulticastDelegateProperty::StaticClass())
@@ -1791,6 +1887,8 @@ PyObject *py_ue_save_package(ue_PyUObject * self, PyObject * args)
 		has_package = true;
 	}
 
+	bool bIsMap = u_object->IsA<UWorld>();
+
 	if (!package || name)
 	{
 		if (!name)
@@ -1803,18 +1901,14 @@ PyObject *py_ue_save_package(ue_PyUObject * self, PyObject * args)
 			if (u_object->HasAnyFlags(RF_Transient))
 			{
 				u_object->ClearFlags(RF_Transient);
-				u_object->SetFlags(RF_Public | RF_Standalone);
 			}
 		}
-		package = (UPackage *)StaticFindObject(nullptr, ANY_PACKAGE, UTF8_TO_TCHAR(name), true);
 		// create a new package if it does not exist
-		if (!package)
-		{
-			package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
-		}
+		package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
 		if (!package)
 			return PyErr_Format(PyExc_Exception, "unable to create package");
-		package->FileName = *FPackageName::LongPackageNameToFilename(UTF8_TO_TCHAR(name), FPackageName::GetAssetPackageExtension());
+		
+		package->FileName = *FPackageName::LongPackageNameToFilename(UTF8_TO_TCHAR(name), bIsMap ? FPackageName::GetMapPackageExtension() : FPackageName::GetAssetPackageExtension());
 		if (has_package)
 		{
 			FString split_path;
@@ -1838,22 +1932,25 @@ PyObject *py_ue_save_package(ue_PyUObject * self, PyObject * args)
 		}
 	}
 
+	// ensure the right flags are applied
+	u_object->SetFlags(RF_Public | RF_Standalone);
+
 	package->FullyLoad();
 	package->MarkPackageDirty();
 
 	if (package->FileName.IsNone())
 	{
-		package->FileName = *FPackageName::LongPackageNameToFilename(*package->GetPathName(), FPackageName::GetAssetPackageExtension());
+		package->FileName = *FPackageName::LongPackageNameToFilename(*package->GetPathName(), bIsMap ? FPackageName::GetMapPackageExtension() : FPackageName::GetAssetPackageExtension());
 		UE_LOG(LogPython, Warning, TEXT("no file mapped to UPackage %s, setting its FileName to %s"), *package->GetPathName(), *package->FileName.ToString());
 	}
 
 	// NOTE: FileName may not be a fully qualified filepath
 	if (FPackageName::IsValidLongPackageName(package->FileName.ToString()))
 	{
-		package->FileName = *FPackageName::LongPackageNameToFilename(package->GetPathName(), FPackageName::GetAssetPackageExtension());
+		package->FileName = *FPackageName::LongPackageNameToFilename(package->GetPathName(), bIsMap ? FPackageName::GetMapPackageExtension() : FPackageName::GetAssetPackageExtension());
 	}
 
-	if (UPackage::SavePackage(package, u_object, RF_Public | RF_Standalone, *package->FileName.ToString()))
+	if (UPackage::SavePackage(package, u_object, RF_NoFlags, *package->FileName.ToString()))
 	{
 		FAssetRegistryModule::AssetCreated(u_object);
 		Py_RETURN_UOBJECT(u_object);

@@ -72,7 +72,7 @@ def ms_obj_exists(object_path):
     Value = False
     get_obj = None
     try:
-        get_obj = ue.find_object(object_path)
+        get_obj = ue.find_asset(object_path + "." + os.path.basename(object_path))
         if get_obj != None:
             Value = True
     except:
@@ -385,8 +385,7 @@ def ms_create_material_instance(M_Parent, Inst_Name, InstancePath):
 
     try:
 
-        material_instance = ue.create_material_instance(
-            M_Parent, InstancePath, Inst_Name)
+        material_instance = ue.create_material_instance(M_Parent, InstancePath, Inst_Name)
         material_instance.save_package()
 
         print("Megascans Integration - Created Material Instance " + str(Inst_Name))
@@ -634,10 +633,9 @@ def ms_form_base_structure():
             ms_return_path(), 'megascans', 'resources')
         mat_fldr = os.path.join(ms_return_path(), 'megascans', 'materials')
 
-        resources_ = [os.path.join(resources_fldr, file_) for file_ in os.listdir(
-            resources_fldr) if file_.lower().endswith('.png')]
-        materials_ = [file_.split('.')[0] for file_ in os.listdir(
-            mat_fldr) if file_.lower().endswith('.json')]
+        resources_ = [os.path.join(resources_fldr, file_) for file_ in os.listdir(resources_fldr) if file_.lower().endswith('.png')]
+
+        materials_ = [file_.split('.')[0] for file_ in os.listdir(mat_fldr) if file_.lower().endswith('.json')]
 
         for a in resources_:
             if not ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + os.path.basename(a).split('.')[0]):
@@ -646,12 +644,12 @@ def ms_form_base_structure():
 
         for mat_ in materials_:
             if not ms_obj_exists("/Game/Megascans/Master_Materials" + '/' + mat_):
-                ms_create_master_material(mat_)
+                ms_create_master_material(mat_, "Create")
 
-            material_ = ue.load_object(
-                Material, "/Game/Megascans/Master_Materials" + '/' + mat_)
+            material_ = ue.load_object(Material, "/Game/Megascans/Master_Materials" + '/' + mat_)
+
             if len(material_.Expressions) == 0:
-                ms_create_master_material(material_)
+                ms_create_master_material(mat_, "Update")
 
     except:
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -758,7 +756,9 @@ def ms_inst_2_mesh(inst_uobj, geo_array):
             settings.MaterialSlotName = inst_array[0].get_name()
             new_settings.append(settings)
 
-            obj_[0].StaticMaterials = new_settings
+            # obj_[0].StaticMaterials = new_settings
+            print("APPLIED MATERIAL"*20)
+            obj_[0].set_material(0, inst_uobj)
             obj_[0].post_edit_change()
             obj_[0].save_package()
 
@@ -788,7 +788,6 @@ def ms_assign_instance_to_meshes(AssetPath):
     try:
 
         MaterialInstance = ue.find_class('MaterialInstance')
-        # AssetPath = ('/Game/Megascans/Wood_Board_rhkc2_2K')
         meshlist_ = ue.get_assets(AssetPath)
         instance_mat = None
         mesh_list = []
@@ -808,8 +807,13 @@ def ms_assign_instance_to_meshes(AssetPath):
             settings.MaterialSlotName = instance_mat[0].get_name()
             new_settings.append(settings)
 
-            obj_[0].StaticMaterials = new_settings
+            # obj_[0].StaticMaterials = new_settings
+            print("SETTING MATERIAL -----------------------------------")
+            obj_[0].set_material(0, instance_mat)
+            print("SETTING MATERIAL -----------------------------------")
+            # ue.set_material(index, instance_mat)
 
+            obj_[0].post_edit_change()
             obj_[0].save_package()
 
     except Exception as e:
@@ -1261,16 +1265,14 @@ ms_create_master_material('Standard_MasterMaterial')
 """
 
 
-def ms_create_master_material(MaterialType):
+def ms_create_master_material(MaterialType, cmd):
 
     try:
 
         material = None
-        material_setup = json.load(open(os.path.join(
-            ms_return_path(), 'megascans', 'materials', MaterialType) + '.json'))
+        material_setup = json.load(open(os.path.join(ms_return_path(), 'megascans', 'materials', MaterialType) + '.json'))
 
-        package_name = ('/Game/Megascans/Master_Materials/' +
-                        material_setup['MaterialName'])
+        package_name = ('/Game/Megascans/Master_Materials/' + material_setup['MaterialName'])
 
         # read the material data
         mat_data = None
@@ -1279,11 +1281,15 @@ def ms_create_master_material(MaterialType):
 
         # set a new material factory
 
-        factory = MaterialFactoryNew()
-        # set the material path
+        if cmd == "Create":
+            factory = MaterialFactoryNew()
+            # set the material path
 
-        # create the material
-        material = factory.factory_create_new(package_name)
+            # create the material
+            material = factory.factory_create_new(package_name)
+
+        elif cmd == "Update":
+            material = ue.load_object( Material, package_name)
 
         # open the material editor
         ue.open_editor_for_asset(material)
@@ -1376,11 +1382,9 @@ def ms_base_importer(material_setup):
             except:
                 pass
 
-            obj_mat = [item for item in settings_['CustomMaterial']
-                       if obj_['Type'].lower() == item[0].lower()][0]
+            obj_mat = [item for item in settings_['CustomMaterial'] if obj_['Type'].lower() == item[0].lower()][0]
 
-            main_f = os.path.join(ue.get_content_dir(), 'Megascans', obj_[
-                                  'Type'].replace(' ', '_'))
+            main_f = os.path.join(ue.get_content_dir(), 'Megascans', obj_['Type'].replace(' ', '_'))
             cur_lib = len([f.path for f in os.scandir(main_f) if f.is_dir()])
             path_prefix = str(cur_lib+1) if cur_lib > 9 else "0" + str(cur_lib+1)
 
@@ -1388,14 +1392,12 @@ def ms_base_importer(material_setup):
             content_dir = ("/Game/Megascans/" + obj_['Type'].replace(' ', '_') + "/" + asset_name)
             instance_name = (asset_name + '_' + obj_['Resolution'] + '_inst')
 
-            pbr_workflow = pbr_metallic if settings_[
-                'PBR Workflow'].lower() == 'metallic' else pbr_specular
+            pbr_workflow = pbr_metallic if settings_['PBR Workflow'].lower() == 'metallic' else pbr_specular
 
             geo_array, maps_array = obj_['MeshList'], obj_['TextureList']
 
             # print(maps_array)
-            maps_array = [item[0] for item in maps_array if ms_get_map(
-                os.path.basename(item[0])).lower() in pbr_workflow]
+            maps_array = [item[0] for item in maps_array if ms_get_map(os.path.basename(item[0])).lower() in pbr_workflow]
 
             subdirs_ = [os.path.basename(x[0]) for x in os.walk(main_f)]
             similar_fldrs = [f for f in subdirs_ if obj_['FolderName'].replace(' ', '_').lower() in f.lower()]
@@ -1405,6 +1407,7 @@ def ms_base_importer(material_setup):
                 if len(geo_array) >= 1:
                     for item in geo_array:
                         ms_import_mesh(item, content_dir)
+
                 if len(maps_array) >= 1:
                     ms_import_texture_list(maps_array, content_dir)
 
@@ -1413,21 +1416,20 @@ def ms_base_importer(material_setup):
                     ms_create_foliage_asset(content_dir)
 
                 if not ms_instance_exists(content_dir + "/" + instance_name) :
-                    parent_path = '/Game/Megascans/Master_Materials/' if len(
-                        obj_mat) <= 2 else obj_mat[2]
-                    parent_mat = ue.load_object(
-                        Material, parent_path + obj_mat[1])
-                    ms_create_material_instance(
-                        parent_mat, instance_name, content_dir)
+                    parent_path = '/Game/Megascans/Master_Materials/' if len(obj_mat) <= 2 else obj_mat[2]
 
-                inst_uobj = ue.load_object(
-                    MaterialInstance, content_dir + "/" + instance_name)
 
-                static_mesh_array = [[item, (content_dir + '/' + item.get_name())]
-                                     for item in ue.get_assets(content_dir) if item.is_a(StaticMesh)]
+                    parent_mat = ue.load_object(Material, parent_path + obj_mat[1])
+                    ms_create_material_instance(parent_mat, instance_name, content_dir)
+
+                inst_uobj = ue.load_object(MaterialInstance, content_dir + "/" + instance_name)
+
+                static_mesh_array = [item for item in ue.get_assets(content_dir) if item.is_a(StaticMesh)]
 
                 if len(geo_array) >= 1:
-                    ms_inst_2_mesh(inst_uobj, static_mesh_array)
+                    for mesh_ in static_mesh_array:
+                        mesh_.set_material(0, inst_uobj)
+                    # ms_inst_2_mesh(inst_uobj, static_mesh_array)
 
                 for texture in [item for item in ue.get_assets(content_dir) if item.is_a(Texture2D)]:
                     try:
@@ -1435,14 +1437,12 @@ def ms_base_importer(material_setup):
                         if text_input.lower() == 'metalness':
                             text_input = 'metallic'
                         text_path = texture.get_path_name()
-                        ms_apply_tex2d_to_inst(
-                            inst_uobj, text_path, text_input)
+                        ms_apply_tex2d_to_inst(inst_uobj, text_path, text_input)
                     except:
                         pass
 
                 if obj_['Type'] == '3D Plant' or obj_['Type'] == 'Scatter 3D' and settings_['AutoFoliage'] == 1:
-                    ms_auto_populate_foliage(
-                        (content_dir + '/Foliage').replace('//', '/'))
+                    ms_auto_populate_foliage((content_dir + '/Foliage').replace('//', '/'))
 
                 if settings_['Surface2Selection'] == 1 and obj_['Type'] == 'Surface' or obj_['Type'] == 'Custom Surface':
                     ms_apply_mat_2_sel(inst_uobj)

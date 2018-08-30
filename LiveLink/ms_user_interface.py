@@ -724,10 +724,10 @@ class megascans_livelink_ui(QDialog):
         self.close_layout.addWidget(self.help_)
         self.help_.clicked.connect(lambda: self.open_quick_help())
 
-        self.minimizewin_ = QBaseButton("minimize")
-        self.minimizewin_.setToolTip("Minimize the Megascans LiveLink window")
-        self.close_layout.addWidget(self.minimizewin_)
-        self.minimizewin_.clicked.connect(lambda: self.showMinimized())
+        # self.minimizewin_ = QBaseButton("minimize")
+        # self.minimizewin_.setToolTip("Minimize the Megascans LiveLink window")
+        # self.close_layout.addWidget(self.minimizewin_)
+        # self.minimizewin_.clicked.connect(lambda: self.showMinimized())
 
         self.close_ui = QBaseButton("close")
         self.close_ui.setToolTip("Close the Megascans LiveLink window. You can reopen it \nby clicking on the Megascans icon in the toolbar")

@@ -11,7 +11,11 @@
 #include "Editor/Sequencer/Public/ISequencer.h"
 #include "Editor/Sequencer/Public/ISequencerModule.h"
 #include "Editor/UnrealEd/Public/Toolkits/AssetEditorManager.h"
+#if ENGINE_MINOR_VERSION >= 20
+#include "LevelSequenceEditor/Private/LevelSequenceEditorToolkit.h"
+#else
 #include "Private/LevelSequenceEditorToolkit.h"
+#endif
 #include "Tracks/MovieSceneCameraCutTrack.h"
 #if ENGINE_MINOR_VERSION < 20
 #include "Sections/IKeyframeSection.h"
@@ -62,6 +66,88 @@ static bool magic_get_frame_number(UMovieScene *MovieScene, PyObject *py_obj, FF
 	return false;
 
 }
+
+#if WITH_EDITOR
+static void ImportTransformChannel(const FInterpCurveFloat& Source, FMovieSceneFloatChannel* Dest, FFrameRate DestFrameRate, bool bNegateTangents)
+{
+	TMovieSceneChannelData<FMovieSceneFloatValue> ChannelData = Dest->GetData();
+	ChannelData.Reset();
+	double DecimalRate = DestFrameRate.AsDecimal();
+	for (int32 KeyIndex = 0; KeyIndex < Source.Points.Num(); ++KeyIndex)
+	{
+		float ArriveTangent = Source.Points[KeyIndex].ArriveTangent;
+		if (KeyIndex > 0)
+		{
+			ArriveTangent = ArriveTangent / ((Source.Points[KeyIndex].InVal - Source.Points[KeyIndex - 1].InVal) * DecimalRate);
+		}
+
+		float LeaveTangent = Source.Points[KeyIndex].LeaveTangent;
+		if (KeyIndex < Source.Points.Num() - 1)
+		{
+			LeaveTangent = LeaveTangent / ((Source.Points[KeyIndex + 1].InVal - Source.Points[KeyIndex].InVal) * DecimalRate);
+		}
+
+		if (bNegateTangents)
+		{
+			ArriveTangent = -ArriveTangent;
+			LeaveTangent = -LeaveTangent;
+		}
+
+		FFrameNumber KeyTime = (Source.Points[KeyIndex].InVal * DestFrameRate).RoundToFrame();
+		FMatineeImportTools::SetOrAddKey(ChannelData, KeyTime, Source.Points[KeyIndex].OutVal, ArriveTangent, LeaveTangent, Source.Points[KeyIndex].InterpMode);
+	}
+
+	Dest->AutoSetTangents();
+}
+
+static bool ImportFBXTransform(FString NodeName, UMovieScene3DTransformSection* TransformSection, UnFbx::FFbxCurvesAPI& CurveAPI)
+{
+
+
+	// Look for transforms explicitly
+	FInterpCurveFloat Translation[3];
+	FInterpCurveFloat EulerRotation[3];
+	FInterpCurveFloat Scale[3];
+	FTransform DefaultTransform;
+	CurveAPI.GetConvertedTransformCurveData(NodeName, Translation[0], Translation[1], Translation[2], EulerRotation[0], EulerRotation[1], EulerRotation[2], Scale[0], Scale[1], Scale[2], DefaultTransform);
+
+	TransformSection->Modify();
+
+	FFrameRate FrameRate = TransformSection->GetTypedOuter<UMovieScene>()->GetTickResolution();
+
+
+	FVector Location = DefaultTransform.GetLocation(), Rotation = DefaultTransform.GetRotation().Euler(), Scale3D = DefaultTransform.GetScale3D();
+
+	TArrayView<FMovieSceneFloatChannel*> Channels = TransformSection->GetChannelProxy().GetChannels<FMovieSceneFloatChannel>();
+
+	Channels[0]->SetDefault(Location.X);
+	Channels[1]->SetDefault(Location.Y);
+	Channels[2]->SetDefault(Location.Z);
+
+	Channels[3]->SetDefault(Rotation.X);
+	Channels[4]->SetDefault(Rotation.Y);
+	Channels[5]->SetDefault(Rotation.Z);
+
+	Channels[6]->SetDefault(Scale3D.X);
+	Channels[7]->SetDefault(Scale3D.Y);
+	Channels[8]->SetDefault(Scale3D.Z);
+
+	ImportTransformChannel(Translation[0], Channels[0], FrameRate, false);
+	ImportTransformChannel(Translation[1], Channels[1], FrameRate, true);
+	ImportTransformChannel(Translation[2], Channels[2], FrameRate, false);
+
+	ImportTransformChannel(EulerRotation[0], Channels[3], FrameRate, false);
+	ImportTransformChannel(EulerRotation[1], Channels[4], FrameRate, true);
+	ImportTransformChannel(EulerRotation[2], Channels[5], FrameRate, true);
+
+	ImportTransformChannel(Scale[0], Channels[6], FrameRate, false);
+	ImportTransformChannel(Scale[1], Channels[7], FrameRate, false);
+	ImportTransformChannel(Scale[2], Channels[8], FrameRate, false);
+
+	return true;
+}
+#endif
+
 #endif
 
 #if WITH_EDITOR
@@ -707,12 +793,36 @@ PyObject *py_ue_sequencer_track_add_section(ue_PyUObject *self, PyObject * args)
 
 	ue_py_check(self);
 
-	if (!self->ue_object->IsA<UMovieSceneTrack>())
+	PyObject *py_section = nullptr;
+	if (!PyArg_ParseTuple(args, "|O:sequencer_track_add_section", &py_section))
+		return nullptr;
+
+
+	UMovieSceneTrack *track = ue_py_check_type<UMovieSceneTrack>(self);
+	if (!track)
 		return PyErr_Format(PyExc_Exception, "uobject is not a UMovieSceneTrack");
 
-	UMovieSceneTrack *track = (UMovieSceneTrack *)self->ue_object;
+	UMovieSceneSection *new_section = nullptr;
 
-	UMovieSceneSection *new_section = track->CreateNewSection();
+	if (!py_section)
+	{
+		new_section = track->CreateNewSection();
+	}
+	else
+	{
+		new_section = ue_py_check_type<UMovieSceneSection>(py_section);
+		if (!new_section)
+		{
+			UClass *u_class = ue_py_check_type<UClass>(py_section);
+			if (u_class && u_class->IsChildOf<UMovieSceneSection>())
+			{
+				new_section = NewObject<UMovieSceneSection>(track, u_class, NAME_None);
+			}
+		}
+	}
+
+	if (!new_section)
+		return PyErr_Format(PyExc_Exception, "argument is not a UMovieSceneSection");
 
 	track->AddSection(*new_section);
 
@@ -1106,7 +1216,7 @@ PyObject *py_ue_sequencer_section_add_key(ue_PyUObject *self, PyObject * args)
 #endif
 
 			Py_RETURN_NONE;
-		}
+}
 	}
 
 	return PyErr_Format(PyExc_Exception, "unsupported section type: %s", TCHAR_TO_UTF8(*section->GetClass()->GetName()));
@@ -1343,10 +1453,6 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 {
 	ue_py_check(self);
 
-#if ENGINE_MINOR_VERSION >= 20
-	return PyErr_Format(PyExc_Exception, "sequencer_import_fbx_transform() is still not supported in this engine version");
-#else
-
 	char *filename;
 	char *nodename;
 	PyObject *py_force_front_x_axis = nullptr;
@@ -1404,8 +1510,7 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 		FTransform DefaultTransform;
 #if ENGINE_MINOR_VERSION >= 18
 		CurveAPI.GetConvertedTransformCurveData(NodeName, Translation[0], Translation[1], Translation[2], EulerRotation[0], EulerRotation[1], EulerRotation[2], Scale[0], Scale[1], Scale[2], DefaultTransform);
-
-
+#if ENGINE_MINOR_VERSION < 20
 		for (int32 ChannelIndex = 0; ChannelIndex < 3; ++ChannelIndex)
 		{
 			EAxis::Type ChannelAxis = EAxis::X;
@@ -1421,14 +1526,14 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 			section->GetTranslationCurve(ChannelAxis).SetDefaultValue(DefaultTransform.GetLocation()[ChannelIndex]);
 			section->GetRotationCurve(ChannelAxis).SetDefaultValue(DefaultTransform.GetRotation().Euler()[ChannelIndex]);
 			section->GetScaleCurve(ChannelAxis).SetDefaultValue(DefaultTransform.GetScale3D()[ChannelIndex]);
-	}
-
+		}
+#endif
 
 #else
 		CurveAPI.GetConvertedTransformCurveData(NodeName, Translation[0], Translation[1], Translation[2], EulerRotation[0], EulerRotation[1], EulerRotation[2], Scale[0], Scale[1], Scale[2]);
 
 #endif
-
+#if ENGINE_MINOR_VERSION < 20
 		float MinTime = FLT_MAX;
 		float MaxTime = -FLT_MAX;
 
@@ -1445,7 +1550,7 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 				else if (ChannelIndex == 2)
 				{
 					ChannelAxis = EAxis::Z;
-			}
+				}
 
 				FInterpCurveFloat* CurveFloat = nullptr;
 				FRichCurve* ChannelCurve = nullptr;
@@ -1494,7 +1599,7 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 						if (KeyIndex < CurveFloat->Points.Num() - 1)
 						{
 							LeaveTangent = LeaveTangent / (CurveFloat->Points[KeyIndex + 1].InVal - CurveFloat->Points[KeyIndex].InVal);
-					}
+						}
 
 						if (bNegative)
 						{
@@ -1504,18 +1609,22 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 
 						FMatineeImportTools::SetOrAddKey(*ChannelCurve, CurveFloat->Points[KeyIndex].InVal, CurveFloat->Points[KeyIndex].OutVal, ArriveTangent, LeaveTangent, CurveFloat->Points[KeyIndex].InterpMode);
 
-				}
+			}
 
 					ChannelCurve->RemoveRedundantKeys(KINDA_SMALL_NUMBER);
 					ChannelCurve->AutoSetTangents();
-		}
-}
+				}
+			}
 		}
 
+#else
+		ImportFBXTransform(nodename, section, CurveAPI);
+#endif
 
+#if ENGINE_MINOR_VERSION < 20
 		section->SetStartTime(MinTime);
 		section->SetEndTime(MaxTime);
-
+#endif
 
 		FbxImporter->ReleaseScene();
 		ImportOptions->bConvertScene = bConverteScene;
@@ -1529,7 +1638,7 @@ PyObject *py_ue_sequencer_import_fbx_transform(ue_PyUObject *self, PyObject * ar
 	ImportOptions->bConvertSceneUnit = bConverteSceneUnit;
 	ImportOptions->bForceFrontXAxis = bForceFrontXAxis;
 	return PyErr_Format(PyExc_Exception, "unable to find specified node in Fbx file");
-#endif
+
 }
 #endif
 

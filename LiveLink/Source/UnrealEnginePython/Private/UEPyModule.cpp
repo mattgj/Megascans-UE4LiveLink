@@ -207,12 +207,29 @@ static PyObject *py_unreal_engine_shutdown(PyObject *self, PyObject * args)
 	Py_RETURN_NONE;
 }
 
+static PyObject *py_unreal_engine_set_brutal_finalize(PyObject *self, PyObject * args)
+{
+
+	PyObject *py_bool = nullptr;
+	if (!PyArg_ParseTuple(args, "|O:set_brutal_finalize", &py_bool))
+	{
+		return nullptr;
+	}
+
+	bool bBrutalFinalize = !py_bool || PyObject_IsTrue(py_bool);
+
+	FUnrealEnginePythonModule &PythonModule = FModuleManager::GetModuleChecked<FUnrealEnginePythonModule>("UnrealEnginePython");
+	PythonModule.BrutalFinalize = bBrutalFinalize;
+	Py_RETURN_NONE;
+}
+
 static PyMethodDef unreal_engine_methods[] = {
 	{ "log", py_unreal_engine_log, METH_VARARGS, "" },
 	{ "log_warning", py_unreal_engine_log_warning, METH_VARARGS, "" },
 	{ "log_error", py_unreal_engine_log_error, METH_VARARGS, "" },
 
 	{ "shutdown", py_unreal_engine_shutdown, METH_VARARGS, "" },
+	{ "set_brutal_finalize", py_unreal_engine_set_brutal_finalize, METH_VARARGS, "" },
 
 	{ "add_on_screen_debug_message", py_unreal_engine_add_on_screen_debug_message, METH_VARARGS, "" },
 	{ "print_string", py_unreal_engine_print_string, METH_VARARGS, "" },
@@ -309,6 +326,7 @@ static PyMethodDef unreal_engine_methods[] = {
 	{ "export_assets", py_unreal_engine_export_assets, METH_VARARGS, "" },
 	{ "get_asset", py_unreal_engine_get_asset, METH_VARARGS, "" },
 	{ "find_asset", py_unreal_engine_find_asset, METH_VARARGS, "" },
+	{ "create_asset", py_unreal_engine_create_asset, METH_VARARGS, "" },
 	{ "delete_object", py_unreal_engine_delete_object, METH_VARARGS, "" },
 	{ "get_assets", py_unreal_engine_get_assets, METH_VARARGS, "" },
 	{ "get_selected_assets", py_unreal_engine_get_selected_assets, METH_VARARGS, "" },
@@ -445,7 +463,7 @@ static PyMethodDef unreal_engine_methods[] = {
 	{ "get_viewport_size", py_unreal_engine_get_viewport_size, METH_VARARGS, "" },
 	{ "get_resolution", py_unreal_engine_get_resolution, METH_VARARGS, "" },
 	{ "get_game_viewport_size", py_unreal_engine_get_game_viewport_size, METH_VARARGS, "" },
-
+		
 	{ "get_game_viewport_client", py_unreal_engine_get_game_viewport_client, METH_VARARGS, "" },
 #pragma warning(suppress: 4191)
 	{ "open_color_picker", (PyCFunction)py_unreal_engine_open_color_picker, METH_VARARGS | METH_KEYWORDS, "" },
@@ -547,6 +565,9 @@ static PyMethodDef ue_PyUObject_methods[] = {
 	{ "get_uproperty", (PyCFunction)py_ue_get_uproperty, METH_VARARGS, "" },
 	{ "get_property_struct", (PyCFunction)py_ue_get_property_struct, METH_VARARGS, "" },
 	{ "get_property_array_dim", (PyCFunction)py_ue_get_property_array_dim, METH_VARARGS, "" },
+	{ "get_inner", (PyCFunction)py_ue_get_inner, METH_VARARGS, "" },
+	{ "get_key_prop", (PyCFunction)py_ue_get_key_prop, METH_VARARGS, "" },
+	{ "get_value_prop", (PyCFunction)py_ue_get_value_prop, METH_VARARGS, "" },
 
 	{ "functions", (PyCFunction)py_ue_functions, METH_VARARGS, "" },
 
@@ -598,8 +619,10 @@ static PyMethodDef ue_PyUObject_methods[] = {
 	{ "save_config", (PyCFunction)py_ue_save_config, METH_VARARGS, "" },
 	{ "get_actor_label", (PyCFunction)py_ue_get_actor_label, METH_VARARGS, "" },
 	{ "set_actor_label", (PyCFunction)py_ue_set_actor_label, METH_VARARGS, "" },
+	{ "set_actor_hidden_in_game", (PyCFunction)py_ue_set_actor_hidden_in_game, METH_VARARGS, "" },
 
 	{ "get_editor_world_counterpart_actor", (PyCFunction)py_ue_get_editor_world_counterpart_actor, METH_VARARGS, "" },
+	{ "component_type_registry_invalidate_class", (PyCFunction)py_ue_component_type_registry_invalidate_class, METH_VARARGS, "" },
 
 	{ "find_actor_by_label", (PyCFunction)py_ue_find_actor_by_label, METH_VARARGS, "" },
 	{ "save_package", (PyCFunction)py_ue_save_package, METH_VARARGS, "" },
@@ -655,6 +678,10 @@ static PyMethodDef ue_PyUObject_methods[] = {
 	{ "add_to_root", (PyCFunction)py_ue_add_to_root, METH_VARARGS, "" },
 	{ "auto_root", (PyCFunction)py_ue_auto_root, METH_VARARGS, "" },
 	{ "remove_from_root", (PyCFunction)py_ue_remove_from_root, METH_VARARGS, "" },
+
+	{ "own", (PyCFunction)py_ue_own, METH_VARARGS, "" },
+	{ "disown", (PyCFunction)py_ue_disown, METH_VARARGS, "" },
+	{ "is_owned", (PyCFunction)py_ue_is_owned, METH_VARARGS, "" },
 
 	{ "find_function", (PyCFunction)py_ue_find_function, METH_VARARGS, "" },
 
@@ -880,6 +907,8 @@ static PyMethodDef ue_PyUObject_methods[] = {
 	{ "get_world_location_at_distance_along_spline", (PyCFunction)py_ue_get_world_location_at_distance_along_spline, METH_VARARGS, "" },
 	{ "get_spline_length", (PyCFunction)py_ue_get_spline_length, METH_VARARGS, "" },
 
+	{ "game_viewport_client_get_window", (PyCFunction)py_ue_game_viewport_client_get_window, METH_VARARGS, "" },
+
 	// Widget
 	{ "take_widget", (PyCFunction)py_ue_take_widget, METH_VARARGS, "" },
 	{ "create_widget", (PyCFunction)py_ue_create_widget, METH_VARARGS, "" },
@@ -1067,6 +1096,7 @@ static PyMethodDef ue_PyUObject_methods[] = {
 	{ "set_material", (PyCFunction)py_ue_set_material, METH_VARARGS, "" },
 	{ "set_material_by_name", (PyCFunction)py_ue_set_material_by_name, METH_VARARGS, "" },
 	{ "set_material_scalar_parameter", (PyCFunction)py_ue_set_material_scalar_parameter, METH_VARARGS, "" },
+	{ "set_material_static_switch_parameter", (PyCFunction)py_ue_set_material_static_switch_parameter, METH_VARARGS, "" },
 	{ "set_material_vector_parameter", (PyCFunction)py_ue_set_material_vector_parameter, METH_VARARGS, "" },
 	{ "set_material_texture_parameter", (PyCFunction)py_ue_set_material_texture_parameter, METH_VARARGS, "" },
 	{ "get_material_scalar_parameter", (PyCFunction)py_ue_get_material_scalar_parameter, METH_VARARGS, "" },
@@ -1120,6 +1150,11 @@ static void ue_pyobject_dealloc(ue_PyUObject *self)
 #if defined(UEPY_MEMORY_DEBUG)
 	UE_LOG(LogPython, Warning, TEXT("Destroying ue_PyUObject %p mapped to UObject %p"), self, self->ue_object);
 #endif
+	if (self->owned)
+	{
+		FUnrealEnginePythonHouseKeeper::Get()->UntrackUObject(self->ue_object);
+	}
+
 	if (self->auto_rooted && (self->ue_object && self->ue_object->IsValidLowLevel() && self->ue_object->IsRooted()))
 	{
 		self->ue_object->RemoveFromRoot();
@@ -1315,8 +1350,16 @@ static PyObject *ue_PyUObject_call(ue_PyUObject *self, PyObject *args, PyObject 
 			Py_INCREF(py_name);
 			PyTuple_SetItem(py_args, 2, py_name);
 		}
-		PyObject *ret = py_unreal_engine_new_object(nullptr, py_args);
+		ue_PyUObject *ret = (ue_PyUObject *)py_unreal_engine_new_object(nullptr, py_args);
 		Py_DECREF(py_args);
+		if (!ret)
+		{
+			return NULL;
+		}
+		// when new_object is called the reference counting is 2 and is registered in the GC
+		// UObject crated explicitely from python, will be managed by python...
+		FUnrealEnginePythonHouseKeeper::Get()->TrackUObject(ret->ue_object);
+
 		return (PyObject *)ret;
 	}
 	// if it is a uscriptstruct, instantiate a new struct
@@ -1754,6 +1797,7 @@ ue_PyUObject *ue_get_python_uobject(UObject *ue_obj)
 		ue_py_object->py_proxy = nullptr;
 		ue_py_object->auto_rooted = 0;
 		ue_py_object->py_dict = PyDict_New();
+		ue_py_object->owned = 0;
 
 		FUnrealEnginePythonHouseKeeper::Get()->RegisterPyUObject(ue_obj, ue_py_object);
 
@@ -2630,7 +2674,7 @@ void ue_bind_events_for_py_class_by_attribute(UObject *u_obj, PyObject *py_class
 			PyObject *event_signature = PyObject_GetAttrString(item, (char*)"ue_event");
 			if (event_signature)
 			{
-				if (PyUnicode_Check(event_signature))
+				if (PyUnicodeOrString_Check(event_signature))
 				{
 					FString event_name = FString(UTF8_TO_TCHAR(UEPyUnicode_AsUTF8(event_signature)));
 					TArray<FString> parts;
