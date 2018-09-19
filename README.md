@@ -15,7 +15,7 @@ If you're facing issues and this documentation isn't helping you please let us k
 Megascans is an ecosystem consisting of a huge scan library and a set of tools to help you work with that library, and Bridge is one of those tools.
 Megascans Bridge lets you Instantly access the entire Megascans library, batch export straight to your game engine or 3D software, and unleash your imagination without having to waste time on importing assets.
 
-Before we keep on with the instructions, keep in mind that we have a series of small videos that help you get up to speed with the LiveLink : [LiveLink Quick Video Guide](https://www.youtube.com/watch?v=WUNdfZM9cps&list=PLeVoIk2cZ8giB4VyyGcur_n0fptS63K_S&index=1)
+Before we keep on with the instructions, keep in mind that we have a series of small videos that help you get up to speed with the LiveLink : [LiveLink Quick Video Guide](https://www.youtube.com/watch?v=WUNdfZM9cps&t=2s&list=PLeVoIk2cZ8giB4VyyGcur_n0fptS63K_S&index=2)
 
 
 How to install the LiveLink with Bridge :
