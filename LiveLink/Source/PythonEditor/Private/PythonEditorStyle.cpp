@@ -68,7 +68,7 @@ void FPythonEditorStyle::Initialize()
 		StyleSet->Set("PythonEditor.PEP8ize.Small", new IMAGE_BRUSH("UI/Excute_x40", Icon16x16));
 	}
 
-	const FSlateFontInfo Consolas10 = TTF_FONT("Font/DroidSansMono", 9);
+	const FSlateFontInfo Consolas10 = TTF_FONT("Font/Ubuntu-R", 9);
 
 	const FTextBlockStyle NormalText = FTextBlockStyle()
 		.SetFont(Consolas10)

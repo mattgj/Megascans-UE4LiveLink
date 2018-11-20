@@ -214,11 +214,17 @@ def ms_get_import_data(material_setup):
 
             try:
                 texture_maps = []
+                packedTextures = []
                 geo_list = []
 
                 for item in js_['components']:
                     if 'path' in item:
                         texture_maps.append([item['path'], item['type']])
+
+                if "packedTextures" in js_.keys():
+                    for item in js_['packedTextures']:
+                        if 'path' in item:
+                            packedTextures.append( [item['path'], item['namingConvention']] )
 
                 for item in js_['meshList']:
                     if 'path' in item:
@@ -231,6 +237,8 @@ def ms_get_import_data(material_setup):
                     "FolderName": (os.path.basename(js_['path'])),
                     "MeshList": geo_list,
                     "TextureList": texture_maps,
+                    "PackedTextureList": packedTextures,
+                    
                     "Resolution": js_['resolution'],
                 })
 
@@ -1384,6 +1392,7 @@ def ms_base_importer(material_setup):
 
             obj_mat = [item for item in settings_['CustomMaterial'] if obj_['Type'].lower() == item[0].lower()][0]
 
+
             main_f = os.path.join(ue.get_content_dir(), 'Megascans', obj_['Type'].replace(' ', '_'))
             cur_lib = len([f.path for f in os.scandir(main_f) if f.is_dir()])
             path_prefix = str(cur_lib+1) if cur_lib > 9 else "0" + str(cur_lib+1)
@@ -1392,15 +1401,17 @@ def ms_base_importer(material_setup):
             content_dir = ("/Game/Megascans/" + obj_['Type'].replace(' ', '_') + "/" + asset_name)
             instance_name = (asset_name + '_' + obj_['Resolution'] + '_inst')
 
+
             pbr_workflow = pbr_metallic if settings_['PBR Workflow'].lower() == 'metallic' else pbr_specular
 
-            geo_array, maps_array = obj_['MeshList'], obj_['TextureList']
+            geo_array, maps_array, packed_array = obj_['MeshList'], obj_['TextureList'], [item[0] for item in obj_['PackedTextureList']]
 
             # print(maps_array)
             maps_array = [item[0] for item in maps_array if ms_get_map(os.path.basename(item[0])).lower() in pbr_workflow]
 
             subdirs_ = [os.path.basename(x[0]) for x in os.walk(main_f)]
             similar_fldrs = [f for f in subdirs_ if obj_['FolderName'].replace(' ', '_').lower() in f.lower()]
+
 
             if len(maps_array) >= 1 and len(similar_fldrs) == 0:
 
@@ -1410,6 +1421,9 @@ def ms_base_importer(material_setup):
 
                 if len(maps_array) >= 1:
                     ms_import_texture_list(maps_array, content_dir)
+
+                if len(packed_array) >= 1:
+                    ms_import_texture_list(packed_array, content_dir)
 
                 if obj_['Type'] == '3D Plant' or obj_['Type'] == 'Scatter 3D':
                     print('Foliage asset detected, creating foliage...')
@@ -1431,15 +1445,24 @@ def ms_base_importer(material_setup):
                         mesh_.set_material(0, inst_uobj)
                     # ms_inst_2_mesh(inst_uobj, static_mesh_array)
 
+
+                packedNamingConventions = [item[1] for item in obj_['PackedTextureList']]
                 for texture in [item for item in ue.get_assets(content_dir) if item.is_a(Texture2D)]:
                     try:
-                        text_input = ms_get_map(texture.get_name())
-                        if text_input.lower() == 'metalness':
-                            text_input = 'metallic'
+
+                        text_input = texture.get_path_name().split("_")[-1]
+
+                        if text_input not in packedNamingConventions:
+                            text_input = ms_get_map(texture.get_name())
+
+                            if text_input.lower() == 'metalness':
+                                text_input = 'metallic'
+
                         text_path = texture.get_path_name()
                         ms_apply_tex2d_to_inst(inst_uobj, text_path, text_input)
                     except:
                         pass
+
 
                 if obj_['Type'] == '3D Plant' or obj_['Type'] == 'Scatter 3D' and settings_['AutoFoliage'] == 1:
                     ms_auto_populate_foliage((content_dir + '/Foliage').replace('//', '/'))
