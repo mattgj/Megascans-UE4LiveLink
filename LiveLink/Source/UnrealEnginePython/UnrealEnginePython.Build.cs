@@ -100,7 +100,6 @@ public class UnrealEnginePython : ModuleRules
 
         PublicIncludePaths.AddRange(
             new string[] {
-                "UnrealEnginePython/Public",
 				// ... add public include paths required here ...
             }
             );
@@ -108,7 +107,6 @@ public class UnrealEnginePython : ModuleRules
 
         PrivateIncludePaths.AddRange(
             new string[] {
-                "UnrealEnginePython/Private",
 				// ... add other private include paths required here ...
 			}
             );
@@ -292,6 +290,11 @@ public class UnrealEnginePython : ModuleRules
         if (!string.IsNullOrEmpty(environmentPath))
             paths.Insert(0, environmentPath);
 
+        // look in an alternate custom location
+        environmentPath = System.Environment.GetEnvironmentVariable("UNREALENGINEPYTHONHOME");
+        if (!string.IsNullOrEmpty(environmentPath))
+            paths.Insert(0, environmentPath);
+
         foreach (string path in paths)
         {
             string actualPath = path;
@@ -404,7 +407,11 @@ public class UnrealEnginePython : ModuleRules
                 break;
             }
         }
-
+        if (!found)
+        {
+            System.Console.WriteLine("[WARNING] Your Python installation is not in the system PATH environment variable.");
+            System.Console.WriteLine("[WARNING] Ensure your python paths are set in GlobalConfig (DefaultEngine.ini) so the path can be corrected at runtime.");
+        }
         // first try with python3
         for (int i = 9; i >= 0; i--)
         {
