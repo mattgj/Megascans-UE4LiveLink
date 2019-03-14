@@ -5,6 +5,7 @@ The Megascans **LiveLink** for Unreal Engine 4 is an **open-source, python-writt
 UnrealEnginePython is developed by Roberto De Ioris (20Tab S.r.l, [20tab.com](http://20tab.com)) with sponsorship from Accademia Italiana Videogiochi ([aiv01.it](http://aiv01.it)), Kite & Lightning ([kiteandlightning.la](http://kiteandlightning.la/)),  GOODTH.INC ([goodthinc.com](https://www.goodthinc.com/)) and QUIXEL AB (Quixel.se).
 
 Windows binaries are currently provided, and **OSX and Linux coming soon**.
+Both BluePrint and C++ are supported.
 
 If you're facing issues with and this documentation isn't helping you please let us know : **[support@quixel.se](mailto:support@quixe.se)** . We'll help you get things fixed ASAP.
 
