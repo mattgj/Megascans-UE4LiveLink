@@ -1,8 +1,8 @@
 # Megascans - Unreal Engine LiveLink
 
-The Megascans **LiveLink** for Unreal Engine 4 is an **open-source, python-written** integration for Megascans inside unreal engine 4. The plugin is written with **[UnrealEnginePython](https://github.com/20tab/UnrealEnginePython)** and is available for UE4 versions **4.15 and above**.
+The Megascans **LiveLink** for Unreal Engine 4 is an **open-source, python-written** integration for Megascans inside Unreal Engine 4. The plugin is written with **[UnrealEnginePython](https://github.com/20tab/UnrealEnginePython)** and is available for UE4 versions **4.15 and above**.
 
-UnrealEnginePython is developed by Roberto De Ioris (20Tab S.r.l, [20tab.com](http://20tab.com)) with sponsorship from Accademia Italiana Videogiochi ([aiv01.it](http://aiv01.it)), Kite & Lightning ([kiteandlightning.la](http://kiteandlightning.la/)),  GOODTH.INC ([goodthinc.com](https://www.goodthinc.com/)) and QUIXEL AB (Quixel.se).
+UnrealEnginePython is developed by Roberto De Ioris (20Tab S.r.l, [20tab.com](http://20tab.com)) with sponsorship from Accademia Italiana Videogiochi ([aiv01.it](http://aiv01.it)), Kite & Lightning ([kiteandlightning.la](http://kiteandlightning.la/)),  GOODTH.INC ([goodthinc.com](https://www.goodthinc.com/)) and QUIXEL AB (https://quixel.com/).
 
 Windows binaries are currently provided, and **OSX and Linux coming soon**.
 Both BluePrint and C++ are supported.
@@ -12,9 +12,9 @@ If you're facing issues with and this documentation isn't helping you please let
 ##
 ![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/unreal_viewport.jpg)
 
-## Installing the LiveLink with Megascans Bridge
+## Installing the LiveLink with Quixel Bridge
 Megascans is an ecosystem consisting of a huge scan library and a set of tools to help you work with that library, and Bridge is one of those tools.
-Megascans Bridge lets you Instantly access the entire Megascans library, batch export straight to your game engine or 3D software, and unleash your imagination without having to waste time on importing assets.
+Quixel Bridge lets you Instantly access the entire Megascans library, batch export straight to your game engine or 3D software, and unleash your imagination without having to waste time on importing assets.
 
 How to install the LiveLink with Bridge :
 
@@ -22,21 +22,26 @@ One minute video guide (Recommended) : [Video Installation Tutorial](https://www
 
 Manual instructions :
 
-- go to https://megascans.se/apps/bridge and download it.
-- Click on the export icon of any asset in your downloaded library, this will open the export options pop-up. set the "Application" drop-down to "Unreal Engine" and click on "Download Plugin". 
+- Go to https://quixel.com/bridge and download Bridge.
 
-- Once the plugin is downloaded you'll need to select which version of unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official unreal engine version just just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom unreal engine build then pick up the **"Custom Build"** option in that drop-down.
+- Click on the export icon of any asset in your downloaded library, this will open the Export Settings pop-up. set the "Application" drop-down to "Unreal Engine" and click on "Download Plugin". 
 
-- Now set the "Engine Version Path" option to where your engine's plugins are installed, like this for instance: **C:\Program Files\Epic Games\UE_4.20\Engine\Plugins**. The path should basically be where your engine's plugins are installed.
+- Next, if Unreal Engine is running on your machine, make sure to close it.
+
+- Once the plugin is downloaded you'll need to select which version of Unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official Unreal Engine version just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom Unreal Engine build, then pick up the **"Custom Build"** option in the drop-down.
+
+- Now set the "Installation Folder" option to where your engine's plugins are installed, like this for instance: **C:\Program Files\Epic Games\UE_4.20\Engine\Plugins**. The path should basically be where your engine's plugins are installed.
 
 - As soon as you've picked the version and the path in the previous step, Bridge will notify you that it's currently installing the plugin, and once it's done it will tell you in a pop-up. 
 
-- Once the installation is done, simply start or restart unreal and click on the green "Export" button in the export dialog of any asset you want to export in Bridge in Bridge. 
+- Once the installation is done, start up Unreal Engine.
+
+- Go to Bridge and click on the green "Export" button in the export dialog of any asset you want to export. 
 
 	-  **Optional for building the plugin on an OS other than Windows** : If you're looking into building the Megascans LiveLink plugin on a non-windows platform, you'll need to build PySide2 with a python installation on your system (`  
 pip install PySide2`), then copy the PySide2 folder from the python/lib/site-packages folder to the UnrealEnginePython/Binaries/Win64 folder. You can confirm to replace if it's asking you to remove an existing installation.
 
-This is what your installation settings for unreal engine 4.19 would look like :
+This is what your installation settings for Unreal Engine 4.19 would look like :
 
 ![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/official_build.png)
 
@@ -47,7 +52,7 @@ This is what your installation settings for a custom build would look like :
 
 ##
 
-The LiveLink currently relies on a hard-coded port to receive data from Megascans Bridge : **13428**. It can only work with one engine open on your system at a time.
+The LiveLink currently relies on a hard-coded port to receive data from Quixel Bridge : **13428**. It can only work with one engine open on your system at a time.
 
 
 ##
@@ -83,7 +88,7 @@ The LiveLink comes with a really neat blend-based master material that has suppo
 
   
 
-To create a the assets you wanblend material simply select 2 or 3 material instances of t to import in the content browser, then click “Create Material Blend”:
+To create the assets you want to blend material simply select 2 or 3 material instances to import in the content browser, then click “Create Material Blend”:
 
   
 
