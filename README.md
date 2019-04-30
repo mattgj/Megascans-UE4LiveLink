@@ -22,33 +22,41 @@ One minute video guide (Recommended) : [Video Installation Tutorial](https://www
 
 Manual instructions :
 
-- Go to https://quixel.com/bridge and download Bridge.
+- Go to https://quixel.com/bridge to download and install Bridge.
 
-- Click on the export icon of any asset in your downloaded library, this will open the Export Settings pop-up. set the "Application" drop-down to "Unreal Engine" and click on "Download Plugin". 
+- Close Unreal Engine if it's already running on your machine.
 
-- Next, if Unreal Engine is running on your machine, make sure to close it.
+- Open Bridge and download an asset.
 
-- Once the plugin is downloaded you'll need to select which version of Unreal you want to install the LiveLink on with the "Engine Version" drop-down. If your using an official Unreal Engine version just select which version (**4.18, 4.19, 4.0, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom Unreal Engine build, then pick up the **"Custom Build"** option in the drop-down.
+- Now go to the Downloaded filter and click on the asset you want to export to open the side panel.
+
+- Click on the Export Settings tab.
+
+- Set the "Export To" drop-down to "Unreal Engine" and click on "Download Plugin". 
+
+- Once the plugin is downloaded, select the version of Unreal you want to install the LiveLink on from the "Engine Version" drop-down. If you're using an official Unreal Engine version just select which version (**4.18, 4.19, 4.20, etc...**) you want to install the LiveLink on. If on the other hand you're trying to install the LiveLink on a custom Unreal Engine build, then pick up the **"Custom Build"** option in the drop-down.
 
 - Now set the "Installation Folder" option to where your engine's plugins are installed, like this for instance: **C:\Program Files\Epic Games\UE_4.20\Engine\Plugins**. The path should basically be where your engine's plugins are installed.
 
-- As soon as you've picked the version and the path in the previous step, Bridge will notify you that it's currently installing the plugin, and once it's done it will tell you in a pop-up. 
+- You can customize the location where you want the Megascans content to be imported in the "Project Location" field. This should be inside a project's Content folder. This field is optional and can be left empty as well.
+
+- As soon as you've picked the version and the path in the steps above, Bridge will notify you that it's currently installing the plugin, and once it's done it will tell you in a pop-up. 
 
 - Once the installation is done, start up Unreal Engine.
 
-- Go to Bridge and click on the green "Export" button in the export dialog of any asset you want to export. 
+- Go to Bridge and export an asset by clicking on the Export icon or the "Export" button in the side panel. 
 
 	-  **Optional for building the plugin on an OS other than Windows** : If you're looking into building the Megascans LiveLink plugin on a non-windows platform, you'll need to build PySide2 with a python installation on your system (`  
 pip install PySide2`), then copy the PySide2 folder from the python/lib/site-packages folder to the UnrealEnginePython/Binaries/Win64 folder. You can confirm to replace if it's asking you to remove an existing installation.
 
-This is what your installation settings for Unreal Engine 4.19 would look like :
+This is what your installation settings for Unreal Engine 4.22 would look like :
 
-![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/official_build.png)
+![ ](https://github.com/Quixel/Megascans-UE4LiveLink/blob/master/Resources/UE4_Settings.png)
 
 
 This is what your installation settings for a custom build would look like :
 
-![ ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/custom_build.png)
+![ ](https://github.com/Quixel/Megascans-UE4LiveLink/blob/master/Resources/UE4_Settings2.png)
 
 ##
 
@@ -56,7 +64,7 @@ The LiveLink currently relies on a hard-coded port to receive data from Quixel B
 
 
 ##
-![ - ](https://raw.githubusercontent.com/Quixel/Megascans-UE4LiveLink/master/Resources/img_02.jpg)
+![ - ](https://github.com/Quixel/Megascans-UE4LiveLink/blob/master/Resources/UE4_Settings3.png)
 
 ## User Interface and Functionalities
 
